@@ -59,3 +59,8 @@ export const signUpWithGoogle = asyncHandler(async (req, res) => {
     token,
   });
 });
+
+// Dev_Goggle_Auth_Api_key=408141853482-r08h13l57h4fpno5f7d0irh9aenush4c.apps.googleusercontent.com
+// Dev_Google_Auth_Api_Secret=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
+
+
