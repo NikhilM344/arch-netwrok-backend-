@@ -101,7 +101,7 @@ export const userLogin = async (req, res) => {
 
     const token = generateJWT({ id: user._id, email: user.email, role: user.role });
 
-    return sendResponse(res, 200, true, { token }, null, "Login successful");
+    return sendResponse(res, 200, true, { token,role:user.role }, null, "Login successful");
   } catch (error) {
     console.error("Login Error:", error);
     return sendResponse(res, 500, false, null, "Something went wrong", "Server Error");

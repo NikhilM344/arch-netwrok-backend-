@@ -16,7 +16,7 @@ const portfolioSchema = new Schema({
     required: [true, "Building Location Is Required"],
     trim: true,
   },
-  completionYear: {
+  projectcompletionYear: {
     type: Number,
     required: [true, "Completion Year Is Required"],
     trim: true,
@@ -27,23 +27,43 @@ const portfolioSchema = new Schema({
     trim: true,
   },
   thumbnailImage: {
-    type: String, 
+    type: String,
     required: [true, "Thumbnail Image URL is required"],
     trim: true,
   },
   portfolioThumbnailImage: {
-    type: String, 
+    type: String,
     required: [true, "Thumbnail Image URL is required"],
     trim: true,
   },
 });
 
 const vendorSignUpSchema = new Schema({
+  category: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  technicalRegNumber: {
+    type: String,
+    required: false,
+    trim: true,
+  },
+  gstNumber: {
+    type: String,
+    required: false,
+    trim: true,
+  },
   companyName: {
     type: String,
     maxlength: [40, "Company Name max 40 chars"],
     minlength: [5, "Min 5 chars required"],
     required: true,
+    trim: true,
+  },
+  businessStablishedYear:{
+     type: Number,
+    required: [true, "Completion Year Is Required"],
     trim: true,
   },
   registrationPlace: {
@@ -53,7 +73,7 @@ const vendorSignUpSchema = new Schema({
     required: true,
     trim: true,
   },
-  ArchitectName: {
+  architectName: {
     type: String,
     maxlength: [30],
     minlength: [3],
@@ -62,7 +82,7 @@ const vendorSignUpSchema = new Schema({
   },
   coaNumber: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
   },
   licenseImage: {
@@ -112,6 +132,15 @@ const vendorSignUpSchema = new Schema({
     type: Boolean,
     required: true,
     default: false,
+  },
+   password: {
+    type: String,
+    required: true,
+  },
+   role: {
+    type: String,
+    enum: ["user", "professional", "admin"],
+    default: "professional",
   },
 });
 
