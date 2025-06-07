@@ -1,5 +1,6 @@
 import sendResponse from "../../utility/response.js";
 import { userSignUpModle } from "../../models/auth/usersignupmodle.js";
+import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
 import bcrypt from "bcryptjs";
 import generateJWT from "../../utility/genratejwt.js";
 
@@ -83,13 +84,24 @@ export const userRegistration = async (req, res) => {
 
 export const userLogin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
-    if (!email || !password) {
-      return sendResponse(res, 400, false, null, "Email and Password are required", "Validation Error");
+    if (!email || !password || !role) {
+      return sendResponse(res, 400, false, null, "Email, Password and Role are required", "Validation Error");
     }
 
-    const user = await userSignUpModle.findOne({ email });
+    let user;
+    let isVendor = false;
+
+    if (role === "user") {
+      user = await userSignUpModle.findOne({ email });
+    } else if (role === "professional") {
+      user = await vendorSignUpModel.findOne({ email });
+      isVendor = true;
+    } else {
+      return sendResponse(res, 400, false, null, "Invalid role", "Role Error");
+    }
+
     if (!user) {
       return sendResponse(res, 404, false, null, "User not found", "No Account");
     }
@@ -99,14 +111,19 @@ export const userLogin = async (req, res) => {
       return sendResponse(res, 401, false, null, "Invalid credentials", "Login Failed");
     }
 
-    const token = generateJWT({ id: user._id, email: user.email, role: user.role });
+    const tokenPayload = { id: user._id, email: user.email, role };
+    const token = generateJWT(tokenPayload);
 
-    return sendResponse(res, 200, true, { token,role:user.role }, null, "Login successful");
+    const responseData = {
+      token,
+      role,
+      email: user.email,
+      name: isVendor ? user.fullName : `${user.firstName} ${user.lastName}`,
+    };
+
+    return sendResponse(res, 200, true, responseData, null, "Login successful");
   } catch (error) {
     console.error("Login Error:", error);
     return sendResponse(res, 500, false, null, "Something went wrong", "Server Error");
   }
 };
-
-
-
