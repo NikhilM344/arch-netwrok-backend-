@@ -9,9 +9,10 @@ const app = express();
 connectDb();
 app.use(cors());
 app.use(express.json());
-app.use("/", (req, res) => {
-  res.json({ message: "Welcome To Build Query" });
+app.get("/", (req, res) => {
+  res.json({ message: "Build Query API is live 🚀" });
 });
+
 app.use("/userauth", userRegistration);
 app.use("/auth", vendorRegistration);
 app.listen(enviormentConfig.port, () => {
