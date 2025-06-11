@@ -7,7 +7,10 @@ import vendorRegistration from "./router/auth/vendorauth.js";
 
 const app = express();
 connectDb();
-app.use(cors());
+app.use(cors({
+  origin: ['http://buildquery.com', 'http://www.buildquery.com'],
+  credentials: true,
+}));
 app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Build Query API is live 🚀" });
