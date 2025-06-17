@@ -4,6 +4,8 @@ import enviormentConfig from "./configs/enviorment.js";
 import connectDb from "./configs/dbconfig.js";
 import userRegistration from "./router/auth/userauth.js";
 import vendorRegistration from "./router/auth/vendorauth.js";
+import professionList from './router/list/professionalListRoute.js'
+import clientRequest from './router/requests/clientRequestsrouter.js'
 
 const app = express();
 connectDb();
@@ -21,6 +23,9 @@ app.get("/", (req, res) => {
 
 app.use("/userauth", userRegistration);
 app.use("/auth", vendorRegistration);
+app.use("/professional", professionList);
+app.use("/request",clientRequest);
+
 app.listen(enviormentConfig.port, () => {
   console.log(`server is running on port ${enviormentConfig.port}`);
 });

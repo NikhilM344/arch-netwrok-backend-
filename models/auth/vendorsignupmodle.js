@@ -142,6 +142,6 @@ const vendorSignUpSchema = new Schema({
     enum: ["user", "professional", "admin"],
     default: "professional",
   },
-});
+},{timestamps:true});
 
 export const vendorSignUpModel = mongoose.model("Vendor", vendorSignUpSchema);

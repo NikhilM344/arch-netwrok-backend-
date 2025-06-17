@@ -30,6 +30,6 @@ const SignUpSchema = new Schema({
     enum: ["user", "professional", "admin"],
     default: "user",
   },
-});
+},{timestamps:true});
 
 export const userSignUpModle = mongoose.model("user", SignUpSchema);
