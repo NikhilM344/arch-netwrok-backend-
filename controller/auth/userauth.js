@@ -115,6 +115,7 @@ export const userLogin = async (req, res) => {
     const token = generateJWT(tokenPayload);
 
     const responseData = {
+      id:user._id,
       token,
       role,
       email: user.email,

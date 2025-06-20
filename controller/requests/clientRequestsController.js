@@ -46,26 +46,28 @@ const clientRequestHandler = async (req, res) => {
       res,
       201,
       true,
+      newRequest,
+      null,
       "Client request submitted successfully",
-      newRequest
     );
   } catch (error) {
     console.error("Error in clientRequestHandler:", error);
 
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((err) => err.message);
-      return sendResponse(res, 400, false, "Validation Error", messages);
+      return sendResponse(res, 400, false, null, messages,"validation error");
     }
     if (error.code === 11000) {
       return sendResponse(
         res,
         400,
         false,
-        "Duplicate field value entered",
-        error.keyValue
+        null,
+        error.keyValue,
+        "Duplicate field value entered"
       );
     }
-    return sendResponse(res, 500, false, "Internal Server Error");
+    return sendResponse(res, 500, false, null,null,"Internal Server Error");
   }
 };
 

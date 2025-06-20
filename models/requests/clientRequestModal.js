@@ -71,6 +71,12 @@ const clientRequestsSchema = new Schema({
     required: [true, "Client Email Is Required"],
     trim: true,
   },
+   status: {
+    type: String,
+    enum: ["new", "accepted", "rejected"],
+    default: "new",
+  },
+ 
 },{timestamps:true});
 
 export const clientRequestModal = mongoose.model("ClientRequest", clientRequestsSchema);
