@@ -76,7 +76,18 @@ const clientRequestsSchema = new Schema({
     enum: ["new", "accepted", "rejected"],
     default: "new",
   },
- 
+  initialDesignIdea:{
+    type:String,
+    default:""
+  },
+  estimatedQuotation:{
+    type:String,
+    default:""
+  },
+  rejectionReason:{
+    type:String,
+    default:""
+  }
 },{timestamps:true});
 
 export const clientRequestModal = mongoose.model("ClientRequest", clientRequestsSchema);
