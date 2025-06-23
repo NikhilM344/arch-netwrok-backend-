@@ -9,7 +9,7 @@ const clientRequestsSchema = new Schema({
   },
   professionalId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "vendors", 
+    ref: "Vendor", 
     required: true,
   },
   clientName: {
