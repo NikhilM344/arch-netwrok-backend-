@@ -16,7 +16,7 @@ export const requireRole = async (req, res, next) => {
        req.professionalId=decode.id
       next()
      }else{
-     sendResponse(res,403,false,null,null,"You have Not Permitted For Access This Role")
+     sendResponse(res,403,false,null,null,"You have Not Permitted For Access This route")
      }
   } catch (error) {
     console.log("error occur in require middleware", error);

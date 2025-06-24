@@ -9,6 +9,8 @@ const storage = multer.diskStorage({
       folder = "uploads/license";
     } else if (file.fieldname === "portfolioThumbnailImage") {
       folder = "uploads/portfolio";
+    }else if(file.fieldname === 'portfolioImage'){
+      folder = "uploads/personalPortfolio"
     }
 
     fs.mkdirSync(folder, { recursive: true }); // Ensure folder exists
