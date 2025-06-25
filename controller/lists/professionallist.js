@@ -2,7 +2,6 @@ import sendResponse from "../../utility/response.js";
 import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
 export const professionalList = async (req, res) => {
   try {
-    // 👇 Projection - only selected fields will be returned
     const professionals = await vendorSignUpModel
       .find()
       .select("fullName category portfolio.description city state portfolio.buildingType");

@@ -11,9 +11,16 @@ const storage = multer.diskStorage({
       folder = "uploads/portfolio";
     }else if(file.fieldname === 'portfolioImage'){
       folder = "uploads/personalPortfolio"
+    }else if (file.fieldname === 'projectImage'){
+        folder = "uploads/projects"
+    }else if (file.fieldname === 'projectExecutionImg'){
+        folder = "uploads/projects"
+    }else if (file.fieldname === 'presentaionBoardImg'){
+        folder = "uploads/projects"
+    }else if (file.fieldname === 'projectTechDocImg'){
+        folder = "uploads/projects"
     }
-
-    fs.mkdirSync(folder, { recursive: true }); // Ensure folder exists
+    fs.mkdirSync(folder, { recursive: true }); 
     cb(null, folder);
   },
   filename: (req, file, cb) => {

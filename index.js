@@ -7,7 +7,8 @@ import vendorRegistration from "./router/auth/vendorauth.js";
 import professionList from './router/list/professionalListRoute.js'
 import clientRequest from './router/requests/clientRequestsrouter.js'
 import userprofile from './router/profile/profileRouter.js'
-import professionalPortfolio from './router/portfolio/createportfolio.js'
+import professionalPortfolio from './router/professional/portfolio/createportfolio.js'
+import professionalProject from './router/professional/project/projectroute.js'
 
 const app = express();
 connectDb();
@@ -29,6 +30,7 @@ app.use("/professional", professionList);
 app.use("/request",clientRequest);
 app.use("/user",userprofile);
 app.use('/portfolio',professionalPortfolio);
+app.use("/profes",professionalProject)
 
 app.listen(enviormentConfig.port, () => {
   console.log(`server is running on port ${enviormentConfig.port}`);

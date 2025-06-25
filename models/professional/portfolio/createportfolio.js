@@ -45,4 +45,4 @@ const professionalPortFolioSchema = new Schema({
   }
 },{timestamps:true});
 
-export const createPortfolioModal = mongoose.model("portfolios", professionalPortFolioSchema);
+export  const createPortfolioModal = mongoose.model("portfolios", professionalPortFolioSchema);
