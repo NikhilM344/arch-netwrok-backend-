@@ -1,4 +1,4 @@
-import  createPortfolioModal  from "../../../router/professional/portfolio/createportfolio.js";
+import { createPortfolioModal } from "../../../models/professional/portfolio/createportfolio.js";
 import sendResponse from "../../../utility/response.js";
 export const createPortfolio = async (req, res) => {
   try {
