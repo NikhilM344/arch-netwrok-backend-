@@ -37,32 +37,44 @@ const professionalProjectBasicDetail = new Schema({
     trim: true,
     requird: [true, "state is required"],
   },
-  projectArea: {
-    type: String,
-    trim: true,
+ projectArea: {
+  value: {
+    type: Number,
     required: false,
-    default: "",
+    default: 0,
   },
+  unit: {
+    type: String,
+    enum: ['sqft', 'sqm'],
+    default: 'sqft',
+  }
+},
+  projectStatus:{
+    type:String,
+    enum:['Built',"Unbuilt",'InProgress'],
+    required:true,
+    trim:true
+  }
 });
 
 const professionalProjectnarativeDetails = new Schema({
   projectObjectives: {
     type: String,
-    maxlength: [300, "projectObjectives Only Contains 300 Characters"],
+    maxlength: [400, "projectObjectives Only Contains 400 Characters"],
     minlength: [10, "projectObjectives long Should be 10 Characters"],
     trim: true,
     required: [true, "projectObjectives Is Required"],
   },
   projectDesignApproach: {
     type: String,
-    maxlength: [300, "projectDesignApproach Only Contains 300  Characters"],
-    minlength: [10, "projectDesignApproach long Should be 3 Characters"],
+    maxlength: [400, "projectDesignApproach Only Contains 400  Characters"],
+    minlength: [10, "projectDesignApproach long Should be 10 Characters"],
     trim: true,
     required: [true, "projectDesignApproach Is Required"],
   },
   projectHighLights: {
     type: String,
-    maxlength: [200, "projectHighLights Only Contains 200 Characters"],
+    maxlength: [600, "projectHighLights Only Contains 600 Characters"],
     minlength: [10, "projectHighLights long Should be 10 Characters"],
     trim: true,
     required: [true, "projectHighLights Is Required"],
@@ -91,6 +103,23 @@ const professionalProjectTeamsAndTools = new Schema({
   },
 });
 
+const professionalTagsAndControl = new Schema({
+  projectServiceType: {
+    type: [String],
+    trim: true,
+    required: [true, "Your Role Is Required"],
+  },
+  projectBuldingType: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  lct: {
+    type: [String],
+    trim: true,
+  },
+});
+
 const professionalProjectSchema = new Schema(
   {
     professionalId: {
@@ -101,26 +130,42 @@ const professionalProjectSchema = new Schema(
     projectBasicDetail: professionalProjectBasicDetail,
     projectNarritveAndDesc: professionalProjectnarativeDetails,
     projectTt: professionalProjectTeamsAndTools,
+    tagsAndControl:professionalTagsAndControl,
     projectImage: {
-      type: String,
+      type: [String],
       required: true,
       trim: true,
     },
     projectExecutionImg: {
-      type: String,
+      type: [String],
       required: false,
       trim: true,
     },
     presentaionBoardImg: {
-      type: String,
+      type: [String],
       required: false,
       trim: true,
     },
     projectTechDocImg: {
-      type: String,
+      type: [String],
       required: false,
       trim: true,
     },
+    isDraft:{
+      type:Boolean,
+      required:true,
+      default:false
+    },
+    isPublished:{
+      type:Boolean,
+      required:true,
+      default:false
+    },
+     isFeatured:{
+      type:Boolean,
+      required:true,
+      default:false
+    }
   },
   { timestamps: true }
 );

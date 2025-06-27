@@ -2,6 +2,7 @@ import { createProjectModal } from "../../../models/professional/project/createp
 import sendResponse from "../../../utility/response.js";
 
 export const createProfessionalProject = async (req, res) => {
+   console.log("req",req);
   if (!req.professionalId) {
     return sendResponse(
       res,
@@ -29,31 +30,39 @@ export const createProfessionalProject = async (req, res) => {
       professionalProjectRole,
       projectTeamMember,
       projectToolsAndSoftware,
+      isDraft,
+      isPublished,
+      projectServiceType,
+      projectBuldingType,
+      lct,
+      projectStatus,
+      isFeatured,
     } = req.body;
 
-    // Required project image
-    const projectImage = req.files?.projectImage?.[0];
-    if (!projectImage) {
+    const baseURL = "http://localhost:4000/uploads/project";
+
+    // Helper to convert multiple files to URLs
+    const getUrls = (files) =>
+      files?.map((file) => `${baseURL}/${file.filename}`) || [];
+
+    const projectImages = req.files?.projectImage || [];
+    if (projectImages.length === 0) {
       return sendResponse(
         res,
         400,
         false,
         null,
         null,
-        "Project image is required"
+        "At least one project image is required"
       );
     }
 
-    // Optional images
-    const projectExecutionImg = req.files?.projectExecutionImg?.[0];
-    const presentaionBoardImg = req.files?.presentaionBoardImg?.[0];
-    const projectTechDocImg = req.files?.projectTechDocImg?.[0];
-
-    const baseURL = "http://localhost:4000/uploads/project";
-
-     const newProject = new createProjectModal({
-        professionalId: req.professionalId,
-        projectBasicDetail: {
+    const newProject = new createProjectModal({
+      professionalId: req.professionalId,
+      isDraft,
+      isPublished,
+      isFeatured,
+      projectBasicDetail: {
         projectTitle,
         projectCategory,
         projectSubCategory,
@@ -61,6 +70,7 @@ export const createProfessionalProject = async (req, res) => {
         projectCity,
         projectState,
         projectArea,
+        projectStatus,
       },
       projectNarritveAndDesc: {
         projectObjectives,
@@ -73,16 +83,13 @@ export const createProfessionalProject = async (req, res) => {
         projectTeamMember,
         projectToolsAndSoftware,
       },
-      projectImage: `${baseURL}/${projectImage.filename}`,
-      ...(projectExecutionImg && {
-        projectExecutionImg: `${baseURL}/${projectExecutionImg.filename}`,
-      }),
-      ...(presentaionBoardImg && {
-        presentaionBoardImg: `${baseURL}/${presentaionBoardImg.filename}`,
-      }),
-      ...(projectTechDocImg && {
-        projectTechDocImg: `${baseURL}/${projectTechDocImg.filename}`,
-      }),
+      tagsAndControl:{
+      projectServiceType,projectBuldingType,lct
+      },
+      projectImage: getUrls(req.files?.projectImage),
+      projectExecutionImg: getUrls(req.files?.projectExecutionImg),
+      presentaionBoardImg: getUrls(req.files?.presentaionBoardImg),
+      projectTechDocImg: getUrls(req.files?.projectTechDocImg),
     });
 
     const savedProject = await newProject.save();
