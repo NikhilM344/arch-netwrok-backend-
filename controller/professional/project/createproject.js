@@ -1,5 +1,6 @@
 import { createProjectModal } from "../../../models/professional/project/createproject.js";
 import sendResponse from "../../../utility/response.js";
+import enviormentConfig from "../../../configs/enviorment.js";
 
 export const createProfessionalProject = async (req, res) => {
    console.log("req",req);
@@ -39,7 +40,7 @@ export const createProfessionalProject = async (req, res) => {
       isFeatured,
     } = req.body;
 
-    const baseURL = "http://localhost:4000/uploads/projects";
+    const baseURL = `${enviormentConfig.backendBaseUrl}uploads/projects`;
 
     // Helper to convert multiple files to URLs
     const getUrls = (files) =>

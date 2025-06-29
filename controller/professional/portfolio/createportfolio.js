@@ -1,5 +1,6 @@
 import { createPortfolioModal } from "../../../models/professional/portfolio/createportfolio.js";
 import sendResponse from "../../../utility/response.js";
+import enviormentConfig from "../../../configs/enviorment.js";
 export const createPortfolio = async (req, res) => {
   try {
     const {
@@ -36,7 +37,7 @@ export const createPortfolio = async (req, res) => {
       );
     }
 
-    const imageUrl = `http://localhost:4000/uploads/personalPortfolio/${imageFile.filename}`;
+    const imageUrl = `${enviormentConfig.backendBaseUrl}uploads/personalPortfolio/${imageFile.filename}`;
 
     const newPortfolio = await createPortfolioModal.create({
       portfolioTitle,
