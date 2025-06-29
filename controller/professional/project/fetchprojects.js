@@ -21,7 +21,7 @@ export const fetchProfessionalProjects = async (req, res) => {
       .lean(); // lean for plain objects
 
     const transformedProjects = projects.map((item) => ({
-      id: item._id,
+      id: item._id.toString(),
       projectBasicDetail: item.projectBasicDetail,
       projectNarritveAndDesc: item.projectNarritveAndDesc,
       projectTt: item.projectTt,
