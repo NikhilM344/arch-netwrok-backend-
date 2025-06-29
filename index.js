@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Build Query API is live 🚀" });
 });
 
+app.use('/uploads', express.static('uploads'));
 app.use("/userauth", userRegistration);
 app.use("/auth", vendorRegistration);
 app.use("/professional", professionList);

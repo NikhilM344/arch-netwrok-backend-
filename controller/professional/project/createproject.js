@@ -39,7 +39,7 @@ export const createProfessionalProject = async (req, res) => {
       isFeatured,
     } = req.body;
 
-    const baseURL = "http://localhost:4000/uploads/project";
+    const baseURL = "http://localhost:4000/uploads/projects";
 
     // Helper to convert multiple files to URLs
     const getUrls = (files) =>
