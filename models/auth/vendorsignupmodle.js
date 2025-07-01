@@ -142,6 +142,14 @@ const vendorSignUpSchema = new Schema({
     enum: ["user", "professional", "admin"],
     default: "professional",
   },
+  avgRating:{
+    type:Number,
+    default:0
+  },
+   totalReview:{
+    type:Number,
+    default:0
+  }
 },{timestamps:true});
 
 export const vendorSignUpModel = mongoose.model("Vendor", vendorSignUpSchema);

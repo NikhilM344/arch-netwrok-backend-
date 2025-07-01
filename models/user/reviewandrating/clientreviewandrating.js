@@ -7,7 +7,7 @@ const reviewSchema = new Schema({
     required:true,
     ref:"user"
   },
-  professionlId:{
+  professionalId:{
     type:mongoose.Schema.Types.ObjectId,
     required:true,
     ref:"Vendor"

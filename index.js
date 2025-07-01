@@ -9,6 +9,7 @@ import clientRequest from './router/requests/clientRequestsrouter.js'
 import userprofile from './router/profile/profileRouter.js'
 import professionalPortfolio from './router/professional/portfolio/createportfolio.js'
 import professionalProject from './router/professional/project/projectroute.js'
+import reviewRouter from './router/user/review/reviewrouter.js'
 
 const app = express();
 connectDb();
@@ -23,7 +24,7 @@ app.use(express.json({ limit: '20mb' }));
 app.get("/", (req, res) => {
   res.json({ message: "Build Query API is live 🚀" });
 });
-
+app.use("/api",reviewRouter);
 app.use('/uploads', express.static('uploads'));
 app.use("/userauth", userRegistration);
 app.use("/auth", vendorRegistration);
