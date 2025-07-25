@@ -1,9 +1,9 @@
 import { createProjectModal } from "../../../models/professional/project/createproject.js";
 import sendResponse from "../../../utility/response.js";
 import enviormentConfig from "../../../configs/enviorment.js";
+import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
 
 export const createProfessionalProject = async (req, res) => {
-   console.log("req",req);
   if (!req.professionalId) {
     return sendResponse(
       res,
@@ -84,8 +84,10 @@ export const createProfessionalProject = async (req, res) => {
         projectTeamMember,
         projectToolsAndSoftware,
       },
-      tagsAndControl:{
-      projectServiceType,projectBuldingType,lct
+      tagsAndControl: {
+        projectServiceType,
+        projectBuldingType,
+        lct,
       },
       projectImage: getUrls(req.files?.projectImage),
       projectExecutionImg: getUrls(req.files?.projectExecutionImg),
@@ -94,6 +96,16 @@ export const createProfessionalProject = async (req, res) => {
     });
 
     const savedProject = await newProject.save();
+    if (savedProject) {
+      const countedDocument = await createProjectModal.countDocuments();
+      if (countedDocument) {
+        const updatedVendor = await vendorSignUpModel.findByIdAndUpdate(
+          { _id: req.professionalId },
+          { iscount: countedDocument }, // count ko update kar diya
+          { new: true }
+        );
+      }
+    }
 
     return sendResponse(
       res,

@@ -15,6 +15,18 @@ const SignUpSchema = new Schema({
     trim: true,
     required: [true, "LastName Is Required"],
   },
+  address:{
+   type:String,
+   required:false,
+   trim:true,
+   default:""
+  },
+   phone:{
+   type:String,
+   required:false,
+   trim:true,
+   default:""
+  },
   email: {
     type: String,
     unique: true,

@@ -137,11 +137,6 @@ const vendorSignUpSchema = new Schema({
     type: String,
     required: true,
   },
-   role: {
-    type: String,
-    enum: ["user", "professional", "admin"],
-    default: "professional",
-  },
   avgRating:{
     type:Number,
     default:0
@@ -149,7 +144,22 @@ const vendorSignUpSchema = new Schema({
    totalReview:{
     type:Number,
     default:0
-  }
+  },
+  isVerifiedByAdmin:{
+    type:Boolean,
+    default:false,
+    required:false
+  },
+  isProjectCount:{
+    type:Number,
+    default:0,
+    required:false
+  },
+   role: {
+    type: String,
+    enum: ["user", "professional", "admin"],
+    default: "professional",
+  },
 },{timestamps:true});
 
 export const vendorSignUpModel = mongoose.model("Vendor", vendorSignUpSchema);

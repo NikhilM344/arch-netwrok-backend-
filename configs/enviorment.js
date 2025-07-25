@@ -6,7 +6,11 @@ const enviormentConfig = {
 port:nodeEnviorment === "production" ? process.env.PRD_BACKEND_RUNNING_PORT : process.env.DEV_BACKEND_RUNNING_PORT,
 dbConnectionUri:nodeEnviorment === "production" ? process.env.PRD_DB_CONNECTION_STRING : process.env.DEV_DB_CONNECTION_STRING,
 jwtSecretKey:nodeEnviorment === "production" ? process.env.PRD_JWT_BACKEND_SECURITY_KEY:process.env.PRD_JWT_BACKEND_SECURITY_KEY,
-backendBaseUrl:nodeEnviorment === "production" ? process.env.PRD_BACKEND_BASE_URL:process.env.DEV_BACKEND_BASE_URL
+backendBaseUrl:nodeEnviorment === "production" ? process.env.PRD_BACKEND_BASE_URL:process.env.DEV_BACKEND_BASE_URL,
+mailAppPassword:nodeEnviorment === "production" ? process.env.PRD_MAIL_APP_PASSWORD : process.env.DEV_MAIL_APP_PASSWORD,
+adminEmail: nodeEnviorment === "production" ? process.env.PRD_ADMIN_EMAIL : process.env.DEV_ADMIN_EMAIL,
+adminPassword: nodeEnviorment === "production" ? process.env.PRD_ADMIN_PASSWORD : process.env.DEV_ADMIN_PASSWORD,
+adminAutoCreate: nodeEnviorment === "production" ? process.env.PRD_ADMIN_AUTO_CREATE : process.env.DEV_ADMIN_AUTO_CREATE,
 }
 
 export default enviormentConfig;

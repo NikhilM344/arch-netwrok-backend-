@@ -1,20 +1,33 @@
 import { reviewModel } from "../../../models/user/reviewandrating/clientreviewandrating.js";
 import { updateProfessionalReviewsandRating } from "../../../utility/professional/updatereviews.js";
 import sendResponse from "../../../utility/response.js";
+import { clientRequestModal } from "../../../models/requests/clientRequestModal.js";
 
 export const createReview = async (req, res) => {
   try {
-    const { professionalId, rating, comment } = req.body;
-    const userId = req.userId;
+    const { professionalId, rating, comment, requestId } = req.body;
+
+    // requestId se clientId nikaalo
+    let clientId = null;
+    if (requestId) {
+      const request = await clientRequestModal.findById(requestId).select("clientId");
+      if (!request) {
+        return sendResponse(res, 404, false, null, null, "Invalid requestId");
+      }
+      clientId = request.clientId;
+    }
+
     const reviewCreationPayload = {
-      clientId: userId,
       professionalId,
       rating,
+      requestId,
+      clientId, 
     };
 
     if (comment) {
       reviewCreationPayload.comment = comment;
     }
+
     const createdReview = await reviewModel.create(reviewCreationPayload);
     if (createdReview) {
       await updateProfessionalReviewsandRating(professionalId);
@@ -25,7 +38,7 @@ export const createReview = async (req, res) => {
         true,
         createdReview,
         null,
-        "Your Review SuccessFully Goes To Professional"
+        "Your Review Successfully Goes To Professional"
       );
     }
   } catch (error) {
@@ -51,6 +64,38 @@ export const createReview = async (req, res) => {
       );
     }
     return sendResponse(
+      res,
+      500,
+      false,
+      null,
+      error.message || "Something went wrong",
+      "Internal Server Error"
+    );
+  }
+};
+
+export const getProfessionalReviews = async (req, res) => {
+  try {
+    const  professionalId  = req.professionalId; // ya req.query ya req.body, jahan se bhi aa rahi ho
+
+    const reviews = await reviewModel.find({ professionalId })
+      .populate({
+        path: "requestId",
+        select: "clientProjectType clientProjectCategory",
+      })
+      .populate({
+        path: "clientId",
+        select: "email firstName lastName",
+      })
+      .populate({
+        path: "professionalId",
+        select: "avgRating totalReview fullName",
+      })
+      .sort({ createdAt: -1 });
+
+    sendResponse(res, 200, true, reviews, null, "Reviews fetched successfully");
+  } catch (error) {
+    sendResponse(
       res,
       500,
       false,

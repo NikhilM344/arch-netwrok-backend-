@@ -1,10 +1,14 @@
 import sendResponse from "../../utility/response.js";
 import { clientRequestModal } from "../../models/requests/clientRequestModal.js";
+import sendMail from "../../utility/mail/sendmail.js";
+import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js"; 
+import requestAcceptedTemplate from "../../utility/mail/templets/requestaccepttemp.js";
+import requestRejectedTemplate from "../../utility/mail/templets/requestrejecttemp.js";
+import { ScheduledReviewMail } from "../../models/mail/scheduledReviewMail.js";
 
- export const updateClientRequestStatus = async (req, res) => {
+export const updateClientRequestStatus = async (req, res) => {
   try {
     const { id } = req.params;
-     console.log("this is id",typeof(id),id);
     const { status, estimatedQuotation, initialDesignIdea, rejectionReason } = req.body;
 
     const allowedStatuses = ['new', 'accepted', 'rejected'];
@@ -22,7 +26,7 @@ import { clientRequestModal } from "../../models/requests/clientRequestModal.js"
       }
       updateFields.estimatedQuotation = estimatedQuotation;
       updateFields.initialDesignIdea = initialDesignIdea;
-      updateFields.rejectionReason = ""; // clear rejectionReason if accepting
+      updateFields.rejectionReason = ""; 
     }
 
     if (status === 'rejected') {
@@ -30,20 +34,60 @@ import { clientRequestModal } from "../../models/requests/clientRequestModal.js"
         return sendResponse(res, 400, false, null, null, "Missing rejectionReason");
       }
       updateFields.rejectionReason = rejectionReason;
-      updateFields.estimatedQuotation = ""; // clear quotation if rejected
-      updateFields.initialDesignIdea = "";  // clear idea if rejected
+      updateFields.estimatedQuotation = ""; 
+      updateFields.initialDesignIdea = "";  
     }
 
     const updatedRequest = await clientRequestModal.findByIdAndUpdate(
       id,
       updateFields,
       { new: true }
-    ).select("clientName email clientProjectCategory clientProjectBudgetRange clientProjectTimeLine clientProjectType clientProjectLocation clientProjectServicesType createdAt status estimatedQuotation initialDesignIdea rejectionReason");
+    ).select("clientName email clientProjectCategory clientProjectBudgetRange clientProjectTimeLine clientProjectType clientProjectLocation clientProjectServicesType createdAt status estimatedQuotation initialDesignIdea rejectionReason professionalId");
 
     if (!updatedRequest) {
       return sendResponse(res, 404, false, null, null, "Client request not found");
     }
 
+    // === Send mail logic ===
+    if (status === 'accepted' && updatedRequest.professionalId) {
+      // Fetch professional info
+      const professional = await vendorSignUpModel.findById(updatedRequest.professionalId).select("fullName email mobileNumber");
+      if (professional) {
+        await sendMail(
+          updatedRequest.email,
+          "Your Request Accepted - Professional Details",
+          requestAcceptedTemplate(
+            updatedRequest.clientName,
+            professional
+          )
+        );
+        // --- Schedule review mail for 2 days later ---
+        const alreadyScheduled = await ScheduledReviewMail.findOne({ requestId: updatedRequest._id });
+        if (!alreadyScheduled) {
+          await ScheduledReviewMail.create({
+            requestId: updatedRequest._id,
+            email: updatedRequest.email,
+            clientName: updatedRequest.clientName,
+            professional,
+            professionalId: updatedRequest.professionalId,
+            sendAt: new Date(Date.now() - 60 * 1000), // 2 din baad
+            sent: false
+          });
+        }
+      }
+    }
+
+    if (status === 'rejected') {
+      await sendMail(
+        updatedRequest.email,
+        "Your Request Was Rejected",
+        requestRejectedTemplate(
+          updatedRequest.clientName,
+          updatedRequest.rejectionReason
+        )
+      );
+    }
+    
     const responsePayload = {
       id: updatedRequest._id,
       clientName: updatedRequest.clientName,

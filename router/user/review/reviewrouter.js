@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { createReview } from "../../../controller/user/reviewandrating/clientreviewandrating.js";
-import { requireRoleClient } from "../../../middleware/requiredRoleclientMiddleware.js";
+import { getProfessionalReviews } from "../../../controller/user/reviewandrating/clientreviewandrating.js";
+import { requireRole } from "../../../middleware/requireRoleMiddleware.js";
 const router = Router();
 
-router.post("/createreview",requireRoleClient,createReview);
+router.post("/createreview",createReview)
+.get("/getprofessionalreviews",requireRole,getProfessionalReviews);
 
 export default router;

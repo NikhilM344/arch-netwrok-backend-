@@ -1,7 +1,7 @@
 import sendResponse from "../../utility/response.js";
 import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
 import { userSignUpModle } from "../../models/auth/usersignupmodle.js";
-
+import { reviewModel } from "../../models/user/reviewandrating/clientreviewandrating.js";
 export const fetchUserProfessionlProfile = async (req, res) => {
   try {
     const { role, id } = req.userInfo;
@@ -14,7 +14,7 @@ export const fetchUserProfessionlProfile = async (req, res) => {
         .find({ _id: id })
         .select(
           "-__v -password -agreeTerms -portfolio -mobileNumber -licenseImage -role -gstNumber"
-        );
+        )
       if (!userInfo) {
         sendResponse(res, 500, false, null, null, "Database is Down");
         return;

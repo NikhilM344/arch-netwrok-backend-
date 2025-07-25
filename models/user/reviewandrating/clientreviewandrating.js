@@ -2,15 +2,20 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
-  clientId:{
-   type:mongoose.Schema.Types.ObjectId,
-    required:true,
-    ref:"user"
-  },
   professionalId:{
     type:mongoose.Schema.Types.ObjectId,
     required:true,
     ref:"Vendor"
+  },
+   clientId:{
+    type:mongoose.Schema.Types.ObjectId,
+    required:true,
+    ref:"user"
+  },
+   requestId:{
+    type:mongoose.Schema.Types.ObjectId,
+    required:true,
+    ref:"ClientRequest"
   },
   rating:{
     type:Number,
@@ -27,6 +32,6 @@ const reviewSchema = new Schema({
 },{timestamps:true});
 
 // Prevent duplicate reviews from same user
-reviewSchema.index({ user: 1, professional: 1 }, { unique: true });
+reviewSchema.index({ clientId: 1, professional: 1 }, { unique: true });
 
 export const reviewModel = mongoose.model('reviews',reviewSchema);
