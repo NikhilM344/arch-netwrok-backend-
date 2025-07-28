@@ -13,12 +13,13 @@ import reviewRouter from './router/user/review/reviewrouter.js'
 import updateProfileRouter from './router/user&professional/updateprofilerouter.js'
 import professionaldetailsRouter from './router/professional/profile/professionalprorouter.js'
 import adminRoutes from './router/admin/adminroutes.js';
+import adminClientRoutes from './router/admin/client/adminclientRoutes.js'
 import './utility/mail/schdulemail.js';
 
 const app = express();
 connectDb();
 app.use(cors({
-  origin: ['http://buildquery.com', 'http://www.buildquery.com','http://localhost:8080'],
+  origin: ['http://buildquery.com', 'http://www.buildquery.com','http://localhost:8080','http://localhost:8081'],
   credentials: true,
 }));
 
@@ -28,7 +29,7 @@ app.use(express.json({ limit: '20mb' }));
 app.get("/", (req, res) => {
   res.json({ message: "Build Query API is live 🚀" });
 });
-app.use("/admin",adminRoutes);
+app.use("/admin",adminRoutes,adminClientRoutes);
 app.use("/api",reviewRouter,updateProfileRouter,professionaldetailsRouter);
 app.use('/uploads', express.static('uploads'));
 app.use("/userauth", userRegistration);

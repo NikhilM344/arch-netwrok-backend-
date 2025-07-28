@@ -3,6 +3,6 @@ const router = Router();
 import { countDetail } from "../../controller/admin/countsdetail.js";
 import { adminLogin } from "../../controller/admin/adminlogin.js";
 
-router.get('/details',countDetail)
+router.get('/dashboarddetails',countDetail)
 .post('/login',adminLogin)
 export default router
