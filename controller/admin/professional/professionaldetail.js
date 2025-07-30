@@ -5,9 +5,8 @@ export const fetchProfessionalDetailForAdmin = async (req, res) => {
   try {
     const professionalDetail = await vendorSignUpModel
       .find({})
-      .select("fullName email city  state  _id")
+      .select("fullName email city  state  _id createdAt")
       .lean();
-
     if (professionalDetail.length === 0) {
       return sendResponse(
         res,
@@ -18,7 +17,6 @@ export const fetchProfessionalDetailForAdmin = async (req, res) => {
         "No professionals registered yet"
       );
     }
-
     const modifiedProfessionalDetails = professionalDetail.map(
       (professional) => {
         return {
@@ -27,6 +25,7 @@ export const fetchProfessionalDetailForAdmin = async (req, res) => {
           email: professional.email,
           city: professional.city,
           state: professional.state,
+          createdAt: professional.createdAt.toISOString().split("T")[0],
         };
       }
     );
@@ -52,8 +51,7 @@ export const fetchProfessionalDetailForAdmin = async (req, res) => {
 
 export const fetchProfessionalDetailsInDetailedForAdmin = async (req, res) => {
   try {
-     console.log("req.query",req.params);
-     const  professionalId = req.params.professionalId;
+    const professionalId = req.params.professionalId;
     if (!professionalId) {
       return sendResponse(
         res,
@@ -66,7 +64,7 @@ export const fetchProfessionalDetailsInDetailedForAdmin = async (req, res) => {
     }
 
     const professionalDetail = await vendorSignUpModel
-      .find({_id: professionalId})
+      .find({ _id: professionalId })
       .select("-password -__v -updatedAt -role")
       .lean();
 
