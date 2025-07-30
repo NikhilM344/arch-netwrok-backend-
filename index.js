@@ -14,6 +14,7 @@ import updateProfileRouter from './router/user&professional/updateprofilerouter.
 import professionaldetailsRouter from './router/professional/profile/professionalprorouter.js'
 import adminRoutes from './router/admin/adminroutes.js';
 import adminClientRoutes from './router/admin/client/adminclientRoutes.js'
+import adminProfRoutes from './router/admin/professional/adminprofRoutes.js';
 import './utility/mail/schdulemail.js';
 
 const app = express();
@@ -29,7 +30,7 @@ app.use(express.json({ limit: '20mb' }));
 app.get("/", (req, res) => {
   res.json({ message: "Build Query API is live 🚀" });
 });
-app.use("/admin",adminRoutes,adminClientRoutes);
+app.use("/admin",adminRoutes,adminClientRoutes,adminProfRoutes);
 app.use("/api",reviewRouter,updateProfileRouter,professionaldetailsRouter);
 app.use('/uploads', express.static('uploads'));
 app.use("/userauth", userRegistration);

@@ -4,10 +4,7 @@ import { userSignUpModle } from "../../../models/auth/usersignupmodle.js";
 
 export const fetchClientDetailForAdmin = async (req, res) => {
   try {
-    // query param se search term lo
     const search = req.query.search || '';
-
-    // filter object banao
     const filter = search
       ? {
           $or: [
@@ -16,7 +13,7 @@ export const fetchClientDetailForAdmin = async (req, res) => {
             { email: { $regex: search, $options: "i" } },
           ],
         }
-      : {}; // agar search empty ho toh sab records laao
+      : {}; 
 
     // DB query
     const fetchClientDetails = await userSignUpModle
@@ -25,7 +22,7 @@ export const fetchClientDetailForAdmin = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    // agar data nahi mila
+  
     if (fetchClientDetails.length === 0) {
       return sendResponse(
         res,
