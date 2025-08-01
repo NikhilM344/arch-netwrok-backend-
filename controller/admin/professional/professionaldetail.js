@@ -82,10 +82,11 @@ export const fetchProfessionalDetailsInDetailedForAdmin = async (req, res) => {
       (professional) => {
         return {
           businessDetails: {
-            businessName: professional.comapnyName,
+            companyName: professional.companyName,
             placeofBusinessRegistration: professional.registrationPlace,
             businessPrincipleArchitectName: professional.architectName,
             businessStablishedYear: professional.businessStablishedYear,
+            businessProof: professional.licenseImage,
           },
           businessCategory: professional.category,
           profPersonalDetails: {

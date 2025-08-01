@@ -150,6 +150,11 @@ const vendorSignUpSchema = new Schema({
     default:false,
     required:false
   },
+   isVerificationRejectionReason:{
+    type:String,
+    default:"",
+    required:false
+  },
   isProjectCount:{
     type:Number,
     default:0,
