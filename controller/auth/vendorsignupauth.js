@@ -1,6 +1,7 @@
-import  {vendorSignUpModel}  from "../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
 import bcrypt from "bcryptjs";
-import  sendResponse  from "../../utility/response.js"; 
+import sendResponse from "../../utility/response.js";
+import enviormentConfig from "../../configs/enviorment.js";
 
 export const vendorRegistration = async (req, res) => {
   try {
@@ -9,11 +10,11 @@ export const vendorRegistration = async (req, res) => {
     const thumbnailFile = req.files["portfolioThumbnailImage"]?.[0];
 
     const licenseImageUrl = licenseFile
-      ? `http://localhost:3000/uploads/license/${licenseFile.filename}`
+      ? `${enviormentConfig.backendBaseUrl}/uploads/license/${licenseFile.filename}`
       : null;
 
     const portfolioThumbnailUrl = thumbnailFile
-      ? `http://localhost:3000/uploads/portfolio/${thumbnailFile.filename}`
+      ? `${enviormentConfig.backendBaseUrl}/uploads/portfolio/${thumbnailFile.filename}`
       : null;
 
     const {
@@ -39,24 +40,51 @@ export const vendorRegistration = async (req, res) => {
       buildingLocation,
       projectcompletionYear,
       description,
-      role
+      role,
     } = req.body;
 
     // ✅ Basic validation
     if (
-      !category || !companyName || !registrationPlace || !architectName ||
-      !password || !fullName || !email || !mobileNumber ||
-      !address || !city || !state || !pinCode || !agreeTerms ||
-      !projectTitle || !buildingType || !buildingLocation ||
-      !projectcompletionYear || !description
+      !category ||
+      !companyName ||
+      !registrationPlace ||
+      !architectName ||
+      !password ||
+      !fullName ||
+      !email ||
+      !mobileNumber ||
+      !address ||
+      !city ||
+      !state ||
+      !pinCode ||
+      !agreeTerms ||
+      !projectTitle ||
+      !buildingType ||
+      !buildingLocation ||
+      !projectcompletionYear ||
+      !description
     ) {
-      return sendResponse(res, 400, false, null, "All fields are required", "Validation Error");
+      return sendResponse(
+        res,
+        400,
+        false,
+        null,
+        "All fields are required",
+        "Validation Error"
+      );
     }
 
     // 🔎 Check if vendor already exists
     const existingVendor = await vendorSignUpModel.findOne({ email });
     if (existingVendor) {
-      return sendResponse(res, 400, false, null, "You are already registered. Please login.", "Already Registered");
+      return sendResponse(
+        res,
+        400,
+        false,
+        null,
+        "You are already registered. Please login.",
+        "Already Registered"
+      );
     }
 
     // 🔐 Hash the password
@@ -94,7 +122,8 @@ export const vendorRegistration = async (req, res) => {
     // Optional fields
     if (coaNumber?.trim()) vendorData.coaNumber = coaNumber;
     if (gstNumber?.trim()) vendorData.gstNumber = gstNumber;
-    if (technicalRegNumber?.trim()) vendorData.technicalRegNumber = technicalRegNumber;
+    if (technicalRegNumber?.trim())
+      vendorData.technicalRegNumber = technicalRegNumber;
 
     // 💾 Save vendor
     const newVendor = new vendorSignUpModel(vendorData);
@@ -115,14 +144,38 @@ export const vendorRegistration = async (req, res) => {
   } catch (error) {
     // ⚠️ Error handling
     if (error.name === "ValidationError") {
-      const errors = Object.values(error.errors).map((err) => err.message);
-      return sendResponse(res, 400, false, null, errors[0], "Validation failed");
+      const errors = Object.values(error.errors).map((err) => ({
+        field: err.path,
+        message: err.message,
+      }));
+
+      return sendResponse(
+        res,
+        400,
+        false,
+        null,
+        errors[0].message,
+        `Validation failed on field: ${errors[0].field}`
+      );
     } else if (error.code === 11000) {
-      return sendResponse(res, 400, false, null, "Email already exists", "Duplicate Email");
+      return sendResponse(
+        res,
+        400,
+        false,
+        null,
+        "Email already exists",
+        "Duplicate Email"
+      );
     } else {
       console.error("Vendor Registration Error:", error);
-      return sendResponse(res, 500, false, null, "Internal Server Error", "Unexpected Error");
+      return sendResponse(
+        res,
+        500,
+        false,
+        null,
+        "Internal Server Error",
+        "Unexpected Error"
+      );
     }
   }
 };
-
