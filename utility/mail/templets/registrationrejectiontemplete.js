@@ -21,7 +21,7 @@ const registrationRejectedTemplate = (userName, reason) => `
         You may re-apply for registration once the necessary corrections are made.
       </p>
       <div style="margin: 28px 0; text-align: center;">
-        <a href="http://www.buildquery.com/register" style="background: #2e6c80; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">
+        <a href="http://www.buildquery.com" style="background: #2e6c80; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">
           Re-Apply
         </a>
       </div>

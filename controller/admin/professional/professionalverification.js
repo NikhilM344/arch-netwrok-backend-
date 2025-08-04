@@ -24,9 +24,11 @@ export const professionalVerificationByAdmin = async (req, res) => {
       return sendResponse(res, 400, false, null, null, "Invalid status value");
     }
 
+    // Database update
     const updateFields = {
-      isVerifiedByAdmin: status==="accepted" ? true : false,
-      isVerificationRejectionReason: status === "rejected" ? rejectionReason : ""
+      isVerifiedByAdmin: status === "accepted",
+      isVerificationRejectionReason:
+        status === "rejected" ? rejectionReason : ""
     };
 
     const updatedRegistrationStatus = await vendorSignUpModel
@@ -38,25 +40,8 @@ export const professionalVerificationByAdmin = async (req, res) => {
       return sendResponse(res, 404, false, null, null, "Professional not found");
     }
 
-    // send email notification
-    if (status === "accepted") {
-      await sendMail(
-        updatedRegistrationStatus.email,
-        "Your Registration Verification Completed",
-        registrationVerifiedTemplate(updatedRegistrationStatus.fullName)
-      );
-    } else if (status === "rejected") {
-      await sendMail(
-        updatedRegistrationStatus.email,
-        "Your Registration Verification Rejected By Admin",
-        registrationRejectedTemplate(
-          updatedRegistrationStatus.fullName,
-          updatedRegistrationStatus.isVerificationRejectionReason
-        )
-      );
-    }
-
-    return sendResponse(
+    // ----------- Response पहले भेज दो -------------
+    sendResponse(
       res,
       200,
       true,
@@ -64,7 +49,38 @@ export const professionalVerificationByAdmin = async (req, res) => {
       null,
       "Verification status updated successfully"
     );
+
+    // ----------- Background Email भेजो -------------
+    (async () => {
+      try {
+        if (status === "accepted") {
+          await sendMail(
+            updatedRegistrationStatus.email,
+            "Your Registration Verification Completed",
+            registrationVerifiedTemplate(updatedRegistrationStatus.fullName)
+          );
+        } else if (status === "rejected") {
+          await sendMail(
+            updatedRegistrationStatus.email,
+            "Your Registration Verification Rejected By Admin",
+            registrationRejectedTemplate(
+              updatedRegistrationStatus.fullName,
+              updatedRegistrationStatus.isVerificationRejectionReason
+            )
+          );
+        }
+      } catch (err) {
+        console.error("Background email sending failed:", err.message);
+      }
+    })();
   } catch (error) {
-    return sendResponse(res, 500, false, null, error.message, "Internal server error");
+    return sendResponse(
+      res,
+      500,
+      false,
+      null,
+      error.message,
+      "Internal server error"
+    );
   }
 };

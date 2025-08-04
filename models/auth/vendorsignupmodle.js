@@ -38,133 +38,148 @@ const portfolioSchema = new Schema({
   },
 });
 
-const vendorSignUpSchema = new Schema({
-  category: {
-    type: String,
-    required: true,
-    trim: true,
+const vendorSignUpSchema = new Schema(
+  {
+    category: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    technicalRegNumber: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    gstNumber: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    companyName: {
+      type: String,
+      maxlength: [40, "Company Name max 40 chars"],
+      minlength: [5, "Min 5 chars required"],
+      required: true,
+      trim: true,
+    },
+    businessStablishedYear: {
+      type: Number,
+      required: [true, "Completion Year Is Required"],
+      trim: true,
+    },
+    registrationPlace: {
+      type: String,
+      maxlength: [20, "Max 20 chars"],
+      minlength: [3, "Min 3 chars"],
+      required: true,
+      trim: true,
+    },
+    architectName: {
+      type: String,
+      maxlength: [30],
+      minlength: [3],
+      required: true,
+      trim: true,
+    },
+    coaNumber: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    licenseImage: {
+      type: String, // Public path to license image
+      required: [true, "License Image is required"],
+      trim: true,
+    },
+    fullName: {
+      type: String,
+      maxlength: [30],
+      minlength: [3],
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    mobileNumber: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    address: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    state: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    pinCode: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+    portfolio: portfolioSchema,
+    agreeTerms: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    avgRating: {
+      type: Number,
+      default: 0,
+    },
+    totalReview: {
+      type: Number,
+      default: 0,
+    },
+    isVerifiedByAdmin: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    isVerificationRejectionReason: {
+      type: String,
+      default: "",
+      required: false,
+    },
+    isPhoneVerifed: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    otp: {
+      type: String,
+      required: false,
+    },
+    otpExpiry:{
+      type:Date
+    },
+    isProjectCount: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    role: {
+      type: String,
+      enum: ["user", "professional", "admin"],
+      default: "professional",
+    },
   },
-  technicalRegNumber: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  gstNumber: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  companyName: {
-    type: String,
-    maxlength: [40, "Company Name max 40 chars"],
-    minlength: [5, "Min 5 chars required"],
-    required: true,
-    trim: true,
-  },
-  businessStablishedYear:{
-     type: Number,
-    required: [true, "Completion Year Is Required"],
-    trim: true,
-  },
-  registrationPlace: {
-    type: String,
-    maxlength: [20, "Max 20 chars"],
-    minlength: [3, "Min 3 chars"],
-    required: true,
-    trim: true,
-  },
-  architectName: {
-    type: String,
-    maxlength: [30],
-    minlength: [3],
-    required: true,
-    trim: true,
-  },
-  coaNumber: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  licenseImage: {
-    type: String, // Public path to license image
-    required: [true, "License Image is required"],
-    trim: true,
-  },
-  fullName: {
-    type: String,
-    maxlength: [30],
-    minlength: [3],
-    required: true,
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  mobileNumber: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  address: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  city: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  state: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  pinCode: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
-  portfolio: portfolioSchema,
-  agreeTerms: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-   password: {
-    type: String,
-    required: true,
-  },
-  avgRating:{
-    type:Number,
-    default:0
-  },
-   totalReview:{
-    type:Number,
-    default:0
-  },
-  isVerifiedByAdmin:{
-    type:Boolean,
-    default:false,
-    required:false
-  },
-   isVerificationRejectionReason:{
-    type:String,
-    default:"",
-    required:false
-  },
-  isProjectCount:{
-    type:Number,
-    default:0,
-    required:false
-  },
-   role: {
-    type: String,
-    enum: ["user", "professional", "admin"],
-    default: "professional",
-  },
-},{timestamps:true});
+  { timestamps: true }
+);
 
 export const vendorSignUpModel = mongoose.model("Vendor", vendorSignUpSchema);
