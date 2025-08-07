@@ -158,8 +158,13 @@ const professionalProjectSchema = new Schema(
     },
     isPublished:{
       type:Boolean,
-      required:true,
+      required:false,
       default:false
+    },
+    isPublishedRejection:{
+      type:String,
+      required:false,
+      default:""
     },
      isFeatured:{
       type:Boolean,
