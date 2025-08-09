@@ -2,6 +2,9 @@ import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
 import bcrypt from "bcryptjs";
 import sendResponse from "../../utility/response.js";
 import enviormentConfig from "../../configs/enviorment.js";
+import { v4 as uuidv4 } from 'uuid';
+import emailVerificationTemplate from "../../utility/mail/templets/emailverificationtemplate.js";
+import sendMail from "../../utility/mail/sendmail.js";
 
 export const vendorRegistration = async (req, res) => {
   try {
@@ -43,7 +46,6 @@ export const vendorRegistration = async (req, res) => {
       role,
     } = req.body;
 
-    // ✅ Basic validation
     if (
       !category ||
       !companyName ||
@@ -74,7 +76,6 @@ export const vendorRegistration = async (req, res) => {
       );
     }
 
-    // 🔎 Check if vendor already exists
     const existingVendor = await vendorSignUpModel.findOne({ email });
     if (existingVendor) {
       return sendResponse(
@@ -82,13 +83,21 @@ export const vendorRegistration = async (req, res) => {
         400,
         false,
         null,
-        "You are already registered. Please login.",
+        "You are already registered.Please login.",
         "Already Registered"
       );
     }
 
     // 🔐 Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // create unique id for email verification
+    const emailVerificationId = uuidv4();
+    // genrate six digit random number for otp
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+     // set otp expiry time 
+       const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+    
 
     // 🏗️ Construct vendor object
     const vendorData = {
@@ -108,6 +117,9 @@ export const vendorRegistration = async (req, res) => {
       state,
       pinCode,
       agreeTerms,
+      emailVerificationId,
+      otp,
+      otpExpiry,
       portfolio: {
         projectTitle,
         buildingType,
@@ -128,7 +140,13 @@ export const vendorRegistration = async (req, res) => {
     // 💾 Save vendor
     const newVendor = new vendorSignUpModel(vendorData);
     await newVendor.save();
-
+    await sendMail(newVendor.email,
+        "Verify Your Email",
+        emailVerificationTemplate(
+          newVendor.fullName,
+          newVendor.otp
+        )
+      )
     return sendResponse(
       res,
       201,
@@ -137,12 +155,12 @@ export const vendorRegistration = async (req, res) => {
         email: newVendor.email,
         fullName: newVendor.fullName,
         companyName: newVendor.companyName,
+        verificationId:newVendor.emailVerificationId
       },
       null,
-      "Vendor registered successfully"
+      "You Are Registerd Successfully"
     );
   } catch (error) {
-    // ⚠️ Error handling
     if (error.name === "ValidationError") {
       const errors = Object.values(error.errors).map((err) => ({
         field: err.path,

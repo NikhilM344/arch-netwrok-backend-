@@ -166,13 +166,23 @@ const vendorSignUpSchema = new Schema(
       required: false,
     },
     otpExpiry:{
-      type:Date
+      type:Date,
+    },
+    emailVerificationId:{
+      type:String,
+      required: false,
+    },
+    isEmailVerfication:{
+      type:Boolean,
+      required: false,
+      default:false
     },
     isProjectCount: {
       type: Number,
       default: 0,
       required: false,
     },
+
     role: {
       type: String,
       enum: ["user", "professional", "admin"],
