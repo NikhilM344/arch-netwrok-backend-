@@ -13,11 +13,11 @@ export const vendorRegistration = async (req, res) => {
     const thumbnailFile = req.files["portfolioThumbnailImage"]?.[0];
 
     const licenseImageUrl = licenseFile
-      ? `${enviormentConfig.backendBaseUrl}/uploads/license/${licenseFile.filename}`
+      ? `${enviormentConfig.backendBaseUrl}uploads/license/${licenseFile.filename}`
       : null;
 
     const portfolioThumbnailUrl = thumbnailFile
-      ? `${enviormentConfig.backendBaseUrl}/uploads/portfolio/${thumbnailFile.filename}`
+      ? `${enviormentConfig.backendBaseUrl}uploads/portfolio/${thumbnailFile.filename}`
       : null;
 
     const {

@@ -15,13 +15,13 @@ import professionaldetailsRouter from './router/professional/profile/professiona
 import adminRoutes from './router/admin/adminroutes.js';
 import adminClientRoutes from './router/admin/client/adminclientRoutes.js'
 import adminProfRoutes from './router/admin/professional/adminprofRoutes.js';
-import otpVerificationsRoutes from './router/auth/otp/otpverificationrouter.js'
+import otpVerificationRoutes from './router/auth/otp/otpverificationroute.js'
 import './utility/mail/schdulemail.js';
 
 const app = express();
 connectDb();
 app.use(cors({
-  origin: ['http://buildquery.com', 'http://www.buildquery.com','http://localhost:8080','http://localhost:8081'],
+  origin: ['http://buildquery.com', 'http://www.buildquery.com','http://localhost:8080','http://localhost:8081','http://localhost:8082'],
   credentials: true,
 }));
 
@@ -35,7 +35,7 @@ app.use("/admin",adminRoutes,adminClientRoutes,adminProfRoutes);
 app.use("/api",reviewRouter,updateProfileRouter,professionaldetailsRouter);
 app.use('/uploads', express.static('uploads'));
 app.use("/userauth", userRegistration);
-app.use("/auth", vendorRegistration,otpVerificationsRoutes);
+app.use("/auth", vendorRegistration,otpVerificationRoutes);
 app.use("/professional", professionList);
 app.use("/request",clientRequest);
 app.use("/user",userprofile);
