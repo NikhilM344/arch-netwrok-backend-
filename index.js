@@ -15,7 +15,8 @@ import professionaldetailsRouter from './router/professional/profile/professiona
 import adminRoutes from './router/admin/adminroutes.js';
 import adminClientRoutes from './router/admin/client/adminclientRoutes.js'
 import adminProfRoutes from './router/admin/professional/adminprofRoutes.js';
-import otpVerificationRoutes from './router/auth/otp/otpverificationroute.js'
+import otpVerificationRoutes from './router/auth/otp/otpverificationroute.js';
+import proDashboardInfoRoutes from './router/professional/dashboard/dashboardRoutes.js'
 import './utility/mail/schdulemail.js';
 
 const app = express();
@@ -36,7 +37,7 @@ app.use("/api",reviewRouter,updateProfileRouter,professionaldetailsRouter);
 app.use('/uploads', express.static('uploads'));
 app.use("/userauth", userRegistration);
 app.use("/auth", vendorRegistration,otpVerificationRoutes);
-app.use("/professional", professionList);
+app.use("/professional", professionList,proDashboardInfoRoutes);
 app.use("/request",clientRequest);
 app.use("/user",userprofile);
 app.use('/portfolio',professionalPortfolio);
