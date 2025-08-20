@@ -1,8 +1,9 @@
 import sendResponse from "../../../utility/response.js";
-import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../../models/auth/professionalsignupmodel.js";
 import { reviewModel } from "../../../models/user/reviewandrating/clientreviewandrating.js";
 import { createProjectModal } from "../../../models/professional/project/createproject.js";
 
+// modified with new
 export const fetchProfessionalProfileDetail = async (req, res) => {
   try {
     const id = req.params.id;
@@ -18,8 +19,10 @@ export const fetchProfessionalProfileDetail = async (req, res) => {
     }
     // find vendor detail
     const vendorIntialDetail = await vendorSignUpModel
-      .findById({ _id: id })
-      .select("fullName companyName isProjectCount avgRating city state mobileNumber email businessStablishedYear address")
+      .findById(id)
+      .select(
+        "representativeName businessName isProjectCount avgRating city state representativeMobile representativeEmail dateOfEstablishment"
+      )
       .lean();
 
     const reviews = await reviewModel

@@ -1,5 +1,5 @@
 import { reviewModel } from "../../models/user/reviewandrating/clientreviewandrating.js";
-import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../models/auth/professionalsignupmodel.js";
 import mongoose from "mongoose";
 
 export const updateProfessionalReviewsandRating = async (professionalId) => {

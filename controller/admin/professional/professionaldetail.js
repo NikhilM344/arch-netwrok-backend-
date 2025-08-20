@@ -1,11 +1,14 @@
 import sendResponse from "../../../utility/response.js";
-import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../../models/auth/professionalsignupmodel.js";
 
+// modified with new
 export const fetchProfessionalDetailForAdmin = async (req, res) => {
   try {
     const professionalDetail = await vendorSignUpModel
       .find({})
-      .select("fullName email city  state  _id createdAt")
+      .select(
+        "representativeName representativeEmail city  state  _id createdAt"
+      )
       .lean();
     if (professionalDetail.length === 0) {
       return sendResponse(
@@ -21,8 +24,8 @@ export const fetchProfessionalDetailForAdmin = async (req, res) => {
       (professional) => {
         return {
           id: professional._id,
-          fullName: professional.fullName,
-          email: professional.email,
+          fullName: professional.representativeName,
+          email: professional.representativeEmail,
           city: professional.city,
           state: professional.state,
           createdAt: professional.createdAt.toISOString().split("T")[0],
@@ -49,6 +52,7 @@ export const fetchProfessionalDetailForAdmin = async (req, res) => {
   }
 };
 
+// modified with new
 export const fetchProfessionalDetailsInDetailedForAdmin = async (req, res) => {
   try {
     const professionalId = req.params.professionalId;
@@ -82,31 +86,36 @@ export const fetchProfessionalDetailsInDetailedForAdmin = async (req, res) => {
       (professional) => {
         return {
           businessDetails: {
-            companyName: professional.companyName,
-            placeofBusinessRegistration: professional.registrationPlace,
-            businessPrincipleArchitectName: professional.architectName,
-            businessStablishedYear: professional.businessStablishedYear,
-            businessProof: professional.licenseImage,
+            companyName: professional.businessName,
+            placeofBusinessRegistration: professional.registeredAddress.line1 || "Address not provided",
+            businessStablishedYear: professional.dateOfEstablishment.toString().split("T")[0] || "Year not specified",
+            businessProof: professional.companyRegistrationDoc || "",
+            businessType: professional.businessType || "Business type not specified",
+            businessEmail:professional.companyEmail || "Email not provided",
+            businessMobile: professional.companyPhone || "Mobile not provided",
+            businessWebsite: professional.websiteUrl || "Website not provided",
           },
-          businessCategory: professional.category,
+          businessCategory:professional.category,
+          //  modified with new
           profPersonalDetails: {
-            fullName: professional.fullName,
-            email: professional.email,
-            mobileNumber: professional.mobileNumber,
-            address: professional.address,
+            fullName: professional.representativeName,
+            email: professional.representativeEmail,
+            mobileNumber: professional.representativeMobile,
+            address: `${professional.state}, ${professional.city}, ${professional.pincode}`,
             city: professional.city,
             state: professional.state,
-            pinCode: professional.pinCode,
+            pinCode: professional.pincode,
           },
           profPortfolio: {
-            projectTitle: professional.portfolio.projectTitle,
-            buildingType: professional.portfolio.buildingType,
-            buildingLocation: professional.portfolio.buildingLocation,
-            projectcompletionYear: professional.portfolio.projectcompletionYear,
-            description: professional.portfolio.description,
-            thumbnailImage: professional.portfolio.thumbnailImage,
-            portfolioThumbnailImage:
-              professional.portfolio.portfolioThumbnailImage,
+            projectTitle: professional.projects.title,
+            buildingType: professional.projects.category||"Category not specified",
+            buildingLocation: professional.projects.location||"Location not specified",
+            description: professional.projects.summary||"Summary not provided",
+            thumbnailImage: professional.projects.image || "Project Image Not Uploaded By Professional",
+          },
+          profVerificationStatus: {
+            isVerifiedByAdmin: professional.isVerifiedByAdmin,
+            isVerificationRejectionReason: professional.isVerificationRejectionReason,
           },
         };
       }

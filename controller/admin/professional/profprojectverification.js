@@ -1,5 +1,5 @@
 import { createProjectModal } from "../../../models/professional/project/createproject.js";
-import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../../models/auth/professionalsignupmodel.js";
 import sendMail from "../../../utility/mail/sendmail.js";
 import projectRejectedTemplate from "../../../utility/mail/templets/project.rejection.templete.js";
 import projectAcceptedTemplate from "../../../utility/mail/templets/project.accept.templete.js";
@@ -52,25 +52,23 @@ export const profProVeriforPublicationByAdmin = async (req, res) => {
       "Project Publication status updated successfully"
     );
 
-    const professionalDetail = await vendorSignUpModel.findById({_id:updatedProjectStatus.professionalId}).select("fullName email")
-      .lean();
-    console.log("professional detail",professionalDetail);
-
+    const professionalDetail = await vendorSignUpModel.findById({_id:updatedProjectStatus.professionalId}).select("representativeName representativeEmail").lean();
+    
    // background requeste
     (async () => {
       try {
         if (status === "accepted") {
           await sendMail(
-            professionalDetail.email,
+            professionalDetail.representativeEmail,
             "Your Project Publication Verification",
-            projectAcceptedTemplate(professionalDetail.fullName,updatedProjectStatus.projectBasicDetail.projectTitle)
+            projectAcceptedTemplate(professionalDetail.representativeName,updatedProjectStatus.projectBasicDetail.projectTitle)
           );
         } else if (status === "rejected") {
           await sendMail(
-            professionalDetail.email,
+            professionalDetail.representativeEmail,
             "Your Project Publication Rejected By Admin",
             projectRejectedTemplate(
-              professionalDetail.fullName,
+              professionalDetail.representativeName,
               updatedProjectStatus.isPublishedRejection
             )
           );

@@ -1,5 +1,7 @@
 import sendResponse from "../../utility/response.js";
-import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../models/auth/professionalsignupmodel.js";
+
+// modified with new
 export const professionalList = async (req, res) => {
   try {
     const { service, location, pincode } = req.query;
@@ -16,12 +18,14 @@ export const professionalList = async (req, res) => {
     }
 
     if (pincode) {
-      filter.pinCode = pincode; 
+      filter.pincode = pincode; 
     }
 
     const professionals = await vendorSignUpModel
       .find(filter)
-      .select("fullName category portfolio.description city state portfolio.buildingType");
+      .select("representativeName category projects.summary city state projects.category");
+
+      console.log("professionals", professionals);
 
     return sendResponse(res, 200, true, professionals, null, "Professional list fetched successfully");
     

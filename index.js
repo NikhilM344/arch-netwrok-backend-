@@ -3,7 +3,6 @@ import cors from "cors";
 import enviormentConfig from "./configs/enviorment.js";
 import connectDb from "./configs/dbconfig.js";
 import userRegistration from "./router/auth/userauth.js";
-import vendorRegistration from "./router/auth/vendorauth.js";
 import professionList from './router/list/professionalListRoute.js'
 import clientRequest from './router/requests/clientRequestsrouter.js'
 import userprofile from './router/profile/profileRouter.js'
@@ -17,6 +16,7 @@ import adminClientRoutes from './router/admin/client/adminclientRoutes.js'
 import adminProfRoutes from './router/admin/professional/adminprofRoutes.js';
 import otpVerificationRoutes from './router/auth/otp/otpverificationroute.js';
 import proDashboardInfoRoutes from './router/professional/dashboard/dashboardRoutes.js'
+import newRegistrationRoute from './router/auth/newprofessionalauth.js'
 import './utility/mail/schdulemail.js';
 
 const app = express();
@@ -36,7 +36,7 @@ app.use("/admin",adminRoutes,adminClientRoutes,adminProfRoutes);
 app.use("/api",reviewRouter,updateProfileRouter,professionaldetailsRouter);
 app.use('/uploads', express.static('uploads'));
 app.use("/userauth", userRegistration);
-app.use("/auth", vendorRegistration,otpVerificationRoutes);
+app.use("/auth",otpVerificationRoutes,newRegistrationRoute);
 app.use("/professional", professionList,proDashboardInfoRoutes);
 app.use("/request",clientRequest);
 app.use("/user",userprofile);

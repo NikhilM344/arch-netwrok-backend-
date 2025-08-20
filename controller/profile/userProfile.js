@@ -1,7 +1,8 @@
 import sendResponse from "../../utility/response.js";
-import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../models/auth/professionalsignupmodel.js";
 import { userSignUpModle } from "../../models/auth/usersignupmodle.js";
-import { reviewModel } from "../../models/user/reviewandrating/clientreviewandrating.js";
+
+// modified with new
 export const fetchUserProfessionlProfile = async (req, res) => {
   try {
     const { role, id } = req.userInfo;

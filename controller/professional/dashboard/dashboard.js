@@ -1,7 +1,8 @@
 import sendResponse from "../../../utility/response.js";
 import { clientRequestModal } from "../../../models/requests/clientRequestModal.js";
-import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../../models/auth/professionalsignupmodel.js";
 
+// modified with new
 const professionalDashboardInfo = async (req, res) => {
   try {
     const professionalId = req.professionalId;

@@ -1,8 +1,9 @@
-import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../../models/auth/professionalsignupmodel.js";
 import sendResponse from "../../../utility/response.js";
 import sendMail from "../../../utility/mail/sendmail.js";
 import emailVerificationTemplate from "../../../utility/mail/templets/emailverificationtemplate.js";
 
+// modified with new
 export const verifyOtp = async (req, res) => {
   try {
     const { emailVerificationId, otp } = req.body;
@@ -26,7 +27,14 @@ export const verifyOtp = async (req, res) => {
     }
 
     if (user.otp !== otp) {
-      return sendResponse(res, 400, false, { otpExpiry: user.otpExpiry }, null, "Invalid OTP");
+      return sendResponse(
+        res,
+        400,
+        false,
+        { otpExpiry: user.otpExpiry },
+        null,
+        "Invalid OTP"
+      );
     }
 
     user.isEmailVerfication = true;
@@ -80,15 +88,23 @@ export const resendOtp = async (req, res) => {
     user.otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
-    await sendMail(user.email, "Resend OTP", emailVerificationTemplate(
-        user.fullName,
-        otp
-    ));
+    await sendMail(
+      user.email,
+      "Resend OTP",
+      emailVerificationTemplate(user.fullName, otp)
+    );
 
-    return sendResponse(res,200,true,{ otpExpiry: user.otpExpiry },null,"OTP resent successfully On Your Email");
+    return sendResponse(
+      res,
+      200,
+      true,
+      { otpExpiry: user.otpExpiry },
+      null,
+      "OTP resent successfully On Your Email"
+    );
   } catch (err) {
     console.error(err);
-    sendResponse(res,500,false,null,null,"Internal Server Error");
+    sendResponse(res, 500, false, null, null, "Internal Server Error");
   }
 };
 
@@ -98,7 +114,14 @@ export const getOtpStatus = async (req, res) => {
 
     const user = await vendorSignUpModel.findOne({ emailVerificationId });
     if (!user) {
-      return sendResponse(res, 400, false, null, null, "Invalid verification ID");
+      return sendResponse(
+        res,
+        400,
+        false,
+        null,
+        null,
+        "Invalid verification ID"
+      );
     }
 
     if (user.isEmailVerfication) {
@@ -113,4 +136,3 @@ export const getOtpStatus = async (req, res) => {
     sendResponse(res, 500, false, null, null, "Internal Server Error");
   }
 };
-

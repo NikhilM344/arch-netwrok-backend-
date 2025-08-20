@@ -1,8 +1,9 @@
 import { createProjectModal } from "../../../models/professional/project/createproject.js";
 import sendResponse from "../../../utility/response.js";
 import enviormentConfig from "../../../configs/enviorment.js";
-import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
+import { vendorSignUpModel } from "../../../models/auth/professionalsignupmodel.js";
 
+// modified with new
 export const createProfessionalProject = async (req, res) => {
   if (!req.professionalId) {
     return sendResponse(

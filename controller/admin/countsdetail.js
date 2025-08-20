@@ -1,8 +1,10 @@
-import { vendorSignUpModel } from "../../models/auth/vendorsignupmodle.js";
+
+import { vendorSignUpModel } from "../../models/auth/professionalsignupmodel.js";
 import { userSignUpModle } from "../../models/auth/usersignupmodle.js";
 import { clientRequestModal } from "../../models/requests/clientRequestModal.js";
 import sendResponse from "../../utility/response.js";
 
+// modified with new
 export const countDetail = async (req, res) => {
   try {
     const professionalCount = await vendorSignUpModel.countDocuments({});

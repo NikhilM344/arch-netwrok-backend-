@@ -1,9 +1,11 @@
-import { vendorSignUpModel } from "../../../models/auth/vendorsignupmodle.js";
+
+import { vendorSignUpModel } from "../../../models/auth/professionalsignupmodel.js";
 import sendMail from "../../../utility/mail/sendmail.js";
 import registrationRejectedTemplate from "../../../utility/mail/templets/registrationrejectiontemplete.js";
 import registrationVerifiedTemplate from "../../../utility/mail/templets/registrationverificationtemplete.js";
 import sendResponse from "../../../utility/response.js";
 
+// modified with new
 export const professionalVerificationByAdmin = async (req, res) => {
   try {
     const { id } = req.params;
@@ -28,16 +30,23 @@ export const professionalVerificationByAdmin = async (req, res) => {
     const updateFields = {
       isVerifiedByAdmin: status === "accepted",
       isVerificationRejectionReason:
-        status === "rejected" ? rejectionReason : ""
+        status === "rejected" ? rejectionReason : "",
     };
 
     const updatedRegistrationStatus = await vendorSignUpModel
       .findByIdAndUpdate(id, updateFields, { new: true })
-      .select("fullName email isVerificationRejectionReason")
+      .select("representativeName representativeEmail isVerificationRejectionReason")
       .lean();
 
     if (!updatedRegistrationStatus) {
-      return sendResponse(res, 404, false, null, null, "Professional not found");
+      return sendResponse(
+        res,
+        404,
+        false,
+        null,
+        null,
+        "Professional not found"
+      );
     }
 
     // ----------- Response पहले भेज दो -------------
@@ -55,16 +64,16 @@ export const professionalVerificationByAdmin = async (req, res) => {
       try {
         if (status === "accepted") {
           await sendMail(
-            updatedRegistrationStatus.email,
+            updatedRegistrationStatus.representativeEmail,
             "Your Registration Verification Completed",
-            registrationVerifiedTemplate(updatedRegistrationStatus.fullName)
+            registrationVerifiedTemplate(updatedRegistrationStatus.representativeName)
           );
         } else if (status === "rejected") {
           await sendMail(
-            updatedRegistrationStatus.email,
+            updatedRegistrationStatus.representativeEmail,
             "Your Registration Verification Rejected By Admin",
             registrationRejectedTemplate(
-              updatedRegistrationStatus.fullName,
+              updatedRegistrationStatus.representativeName,
               updatedRegistrationStatus.isVerificationRejectionReason
             )
           );
