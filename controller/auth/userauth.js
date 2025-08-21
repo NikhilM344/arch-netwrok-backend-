@@ -86,9 +86,15 @@ export const userLogin = async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-  
     if (!email || !password || !role) {
-      return sendResponse(res, 400, false, null, "Email, Password and Role are required", "Validation Error");
+      return sendResponse(
+        res,
+        400,
+        false,
+        null,
+        "Email, Password and Role are required",
+        "Validation Error"
+      );
     }
 
     let user;
@@ -97,8 +103,21 @@ export const userLogin = async (req, res) => {
     if (role === "user") {
       user = await userSignUpModle.findOne({ email });
     } else if (role === "professional") {
-      user = await vendorSignUpModel.findOne({representativeEmail: email});
+      user = await vendorSignUpModel.findOne({ representativeEmail: email });
       isVendor = true;
+
+      // ✅ Direct check on root field
+      if (user && user.isVerifiedByAdmin === false) {
+        return sendResponse(
+          res,
+          403,
+          false,
+          null,
+          null,
+          "Your account has not been verified by the admin yet. Please wait until the verification is complete to log in.",
+          "Verification Pending"
+        );
+      }
     } else {
       return sendResponse(res, 400, false, null, "Invalid role", "Role Error");
     }
@@ -109,87 +128,44 @@ export const userLogin = async (req, res) => {
 
     const isMatch = await bcrypt.compare(String(password), user.password);
     if (!isMatch) {
-      return sendResponse(res, 401, false, null, "Invalid credentials", "Login Failed");
+      return sendResponse(
+        res,
+        401,
+        false,
+        null,
+        "Invalid credentials",
+        "Login Failed"
+      );
     }
 
-    const tokenPayload = { id: user._id, email: isVendor ? user.representativeEmail:user.email, role };
+    const tokenPayload = {
+      id: user._id,
+      email: isVendor ? user.representativeEmail : user.email,
+      role,
+    };
     const token = generateJWT(tokenPayload);
 
     const responseData = {
-      id:user._id,
+      id: user._id,
       token,
       role,
-      email: user.email,
-      name: isVendor ? user.representativeEmail : `${user.firstName} ${user.lastName}`,
+      email: isVendor ? user.representativeEmail : user.email,
+      name: isVendor
+        ? user.representativeName
+        : `${user.firstName} ${user.lastName}`,
     };
 
     return sendResponse(res, 200, true, responseData, null, "Login successful");
   } catch (error) {
     console.error("Login Error:", error);
-    return sendResponse(res, 500, false, null, "Something went wrong", "Server Error");
+    return sendResponse(
+      res,
+      500,
+      false,
+      null,
+      "Something went wrong",
+      "Server Error"
+    );
   }
 };
 
-
-// export const userLogin = async (req, res) => {
-//   try {
-//     const { email, password, role } = req.body;
-
-//     if (!email || !password || !role) {
-//       return sendResponse(res, 400, false, null, "Email, Password and Role are required", "Validation Error");
-//     }
-
-//     let user;
-//     let isVendor = false;
-
-//     if (role === "user") {
-//       user = await userSignUpModle.findOne({ email });
-//     } else if (role === "professional") {
-//       user = await vendorSignUpModel.findOne({ representativeEmail: email });
-//       isVendor = true;
-
-//       // ✅ yaha verification check daala
-//       if (user && user.profVerificationStatus && user.profVerificationStatus.isVerifiedByAdmin === false) {
-//         return sendResponse(
-//           res,
-//           403,
-//           false,
-//           null,
-//           "Your account is not yet verified by admin.",
-//           "Not Verified"
-//         );
-//       }
-//     } else {
-//       return sendResponse(res, 400, false, null, "Invalid role", "Role Error");
-//     }
-
-//     if (!user) {
-//       return sendResponse(res, 404, false, null, "User not found", "No Account");
-//     }
-
-//     const isMatch = await bcrypt.compare(String(password), user.password);
-//     if (!isMatch) {
-//       return sendResponse(res, 401, false, null, "Invalid credentials", "Login Failed");
-//     }
-
-//     const tokenPayload = {
-//       id: user._id,
-//       email: isVendor ? user.representativeEmail : user.email,
-//       role,
-//     };
-//     const token = generateJWT(tokenPayload);
-
-//     const responseData = {
-//       id: user._id,
-//       token,
-//       role,
-//       email: isVendor ? user.representativeEmail : user.email,
-//       name: isVendor ? user.representativeName : `${user.firstName} ${user.lastName}`,
-//     };
-
-//     return sendResponse(res, 200, true, responseData, null, "Login successful");
-//   } catch (error) {
-//     console.error("Login Error:", error);
-//     return sendResponse(res, 500, false, null, "Something went wrong", "Server Error");
-//   }
-// };

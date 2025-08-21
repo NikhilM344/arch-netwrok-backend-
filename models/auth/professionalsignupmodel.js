@@ -18,13 +18,13 @@ const OperatingAreaSchema = new Schema(
 const ProjectSchema = new Schema(
   {
     title: { type: String, required: true, trim: true, maxlength: 140 },
-    summary: { type: String, required: true, trim: true, maxlength: 320 },
+    summary: { type: String, required: true, trim: true, maxlength: 500 },
     category: { type: String, trim: true, maxlength: 80 },
     location: { type: String, trim: true, maxlength: 120 },
     startDate: Date,
     endDate: Date,
     budgetRange: { type: String, trim: true, maxlength: 80 },
-    image: { type: String, default: "" },   // 👈 ek hi image
+    image: { type: String, default: "" }, // 👈 ek hi image
     videoUrls: { type: String, default: "" },
   },
   { _id: false }
@@ -35,8 +35,8 @@ const TeamMemberSchema = new Schema(
     name: { type: String, required: false, trim: true, maxlength: 80 },
     role: { type: String, required: false, trim: true, maxlength: 80 },
     experienceYears: { type: Number, min: 0, max: 80 },
-    photo: { type: String, required: false, default: "" },
-    certifications: { type: [String], default: [] },
+    // photo: { type: String, required: false, default: "" },
+    // certifications: { type: [String], default: [] },
   },
   { _id: false }
 );
@@ -142,16 +142,16 @@ const BusinessProfileSchema = new Schema(
     representativePhoto: { type: String, required: false },
 
     gstNumber: { type: String, trim: true, maxlength: 20 },
-    gstDocument: {type:String},
+    gstDocument: { type: String },
     kycIdType: {
       type: String,
       required: true,
       enum: ["Aadhaar", "PAN", "VoterID", "Passport"],
     },
     kycIdDocument: { type: String, required: true },
-    businessPanCard: {type:String},
+    businessPanCard: { type: String },
 
-    logo: {type:String,required:true},
+    logo: { type: String, required: true },
     tagline: { type: String, trim: true, maxlength: 160 },
     brandColors: { type: [String], default: [] },
     styleGuideFile: { type: String, required: false },
@@ -164,7 +164,7 @@ const BusinessProfileSchema = new Schema(
       maxlength: 9000,
     },
 
-     projects: { type: ProjectSchema, default: {} },
+    projects: { type: ProjectSchema, default: {} },
     teamMembers: { type: [TeamMemberSchema], default: [] },
     capacity: { type: CapacitySchema },
 
