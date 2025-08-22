@@ -29,7 +29,7 @@ app.use(
       "http://localhost:8080",
       "http://localhost:8081",
       "http://localhost:8082",
-      "http://admin.buildquery.com",
+      "http://admin.buildquery.com/",
     ],
     credentials: true,
   })
