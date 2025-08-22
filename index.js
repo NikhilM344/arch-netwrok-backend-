@@ -35,20 +35,36 @@ connectDb();
 //   })
 // );
 
+// Allowed origins list
+const allowedOrigins = [
+  "http://buildquery.com",
+  "http://www.buildquery.com",
+  "http://admin.buildquery.com",
+  "http://91.108.111.222",
+  "http://localhost:8080",
+  "http://localhost:8081",
+  "http://localhost:8082",
+];
+
+// CORS middleware
 app.use(
   cors({
-    origin: [
-      "http://buildquery.com",
-      "http://www.buildquery.com",
-      "http://admin.buildquery.com",
-      "http://91.108.111.222",
-      "http://localhost:8080",
-      "http://localhost:8081",
-      "http://localhost:8082",
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
+
+// Preflight request handling
+app.options("*", cors());
+
+
 
 
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
