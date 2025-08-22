@@ -34,6 +34,7 @@ connectDb();
 //     credentials: true,
 //   })
 // );
+
 const allowedOrigins = [
   "http://buildquery.com",
   "http://www.buildquery.com",
@@ -44,7 +45,6 @@ const allowedOrigins = [
   "http://localhost:8082",
 ];
 
-// CORS middleware (main fix)
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -56,11 +56,15 @@ app.use((req, res, next) => {
       "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
   }
+
   if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+    // Preflight request ke liye proper CORS headers ke saath response bhejna zaroori hai
+    return res.status(204).end();
   }
+
   next();
 });
+
 
 
 
