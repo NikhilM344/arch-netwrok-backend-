@@ -21,19 +21,35 @@ import "./utility/mail/schdulemail.js";
 
 const app = express();
 connectDb();
+// app.use(
+//   cors({
+//     origin: [
+//       "http://buildquery.com",
+//       "http://www.buildquery.com",
+//       "http://localhost:8080",
+//       "http://localhost:8081",
+//       "http://localhost:8082",
+//       "http://admin.buildquery.com/",
+//     ],
+//     credentials: true,
+//   })
+// );
+
 app.use(
   cors({
     origin: [
       "http://buildquery.com",
       "http://www.buildquery.com",
+      "http://admin.buildquery.com",
+      "http://91.108.111.222",
       "http://localhost:8080",
       "http://localhost:8081",
       "http://localhost:8082",
-      "http://admin.buildquery.com/",
     ],
     credentials: true,
   })
 );
+
 
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 app.use(express.json({ limit: "20mb" }));
