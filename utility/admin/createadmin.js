@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
-
+import mongoose from "mongoose";
 import { adminLoginModel } from "../../models/admin/auth/adminloginmodel.js";
-import enviormentConfig from "../../configs/enviorment.js";
-import e from "express";
-const username = enviormentConfig.adminEmail;
-const rawPassword = enviormentConfig.adminPassword;
- console.log("check email",enviormentConfig.adminEmail);
-  console.log("check password",enviormentConfig.adminPassword);
+// import enviormentConfig from "../../configs/enviorment.js";
+
+const username = "admin123"
+const rawPassword = "admin123"
+ console.log("check email",username);
+  console.log("check password",rawPassword);
 
 
 export async function createAdmin() {
