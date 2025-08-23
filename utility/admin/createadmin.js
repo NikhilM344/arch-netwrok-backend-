@@ -34,3 +34,5 @@ export async function createAdmin() {
     process.exit();
   }
 }
+
+createAdmin();
