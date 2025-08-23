@@ -29,9 +29,9 @@ export async function createAdmin() {
   } catch (error) {
     console.error("❌ Error creating admin:", error);
   } finally {
-    await mongoose.connection.close();
-    console.log("🔹 DB connection closed");
-    process.exit();
+    // await mongoose.connection.close();
+    console.log("🔹 created successfully");
+    // process.exit();
   }
 }
 
