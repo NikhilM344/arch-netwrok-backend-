@@ -2,15 +2,17 @@ import bcrypt from "bcryptjs";
 
 import { adminLoginModel } from "../../models/admin/auth/adminloginmodel.js";
 import enviormentConfig from "../../configs/enviorment.js";
+import e from "express";
 const username = enviormentConfig.adminEmail;
 const rawPassword = enviormentConfig.adminPassword;
+ console.log("check email",enviormentConfig.adminEmail);
+  console.log("check password",enviormentConfig.adminPassword);
 
-console.log("check",username, rawPassword);
 
 export async function createAdmin() {
   try {
     const existingAdmin = await adminLoginModel.findOne({ username });
-
+     console.log("existing admin",existingAdmin);
     if (existingAdmin) {
       console.log("⚠️ Admin already exists. Skipping creation.");
     } else {
