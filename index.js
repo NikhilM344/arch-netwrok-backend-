@@ -35,39 +35,6 @@ app.use(
   })
 );
 
-// const allowedOrigins = [
-//   "http://buildquery.com",
-//   "http://www.buildquery.com",
-//   "http://admin.buildquery.com",
-//   "http://91.108.111.222",
-//   "http://localhost:8080",
-//   "http://localhost:8081",
-//   "http://localhost:8082",
-// ];
-
-// app.use((req, res, next) => {
-//   const origin = req.headers.origin;
-//   if (allowedOrigins.includes(origin)) {
-//     res.header("Access-Control-Allow-Origin", origin);
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-//     res.header(
-//       "Access-Control-Allow-Headers",
-//       "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//     );
-//   }
-
-//   if (req.method === "OPTIONS") {
-//     // Preflight request ke liye proper CORS headers ke saath response bhejna zaroori hai
-//     return res.status(204).end();
-//   }
-
-//   next();
-// });
-
-
-
-
 
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 app.use(express.json({ limit: "20mb" }));
