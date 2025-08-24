@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: "buildquery27@gmail.com",
-    pass: enviormentConfig.mailAppPassword, // 16-digit app password
+    pass: "yykn nqiw twwu alxp", // 16-digit app password
   },
 });
 
