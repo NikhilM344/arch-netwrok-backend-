@@ -1,6 +1,6 @@
 import { configDotenv } from "dotenv";
 configDotenv();
-const nodeEnviorment = process.env.NODE_ENVIORMENT;
+const nodeEnviorment = process.env.NODE_ENV;
 
 const enviormentConfig = {
   port:
