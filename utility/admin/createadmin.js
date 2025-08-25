@@ -1,10 +1,10 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { adminLoginModel } from "../../models/admin/auth/adminloginmodel.js";
-// import enviormentConfig from "../../configs/enviorment.js";
+import enviormentConfig from "../../configs/enviorment.js";
 
-const username = "admin123"
-const rawPassword = "admin123"
+const username = enviormentConfig.adminEmail
+const rawPassword = enviormentConfig.adminPassword
  console.log("check email",username);
   console.log("check password",rawPassword);
 
