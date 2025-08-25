@@ -1,6 +1,6 @@
 import express from "express";
-import cors from "cors";
 import enviormentConfig from "./configs/enviorment.js";
+import cors from "cors";
 import connectDb from "./configs/dbconfig.js";
 import userRegistration from "./router/auth/userauth.js";
 import professionList from "./router/list/professionalListRoute.js";
