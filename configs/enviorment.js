@@ -55,7 +55,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const nodeEnviorment = process.env.NODE_ENV; // Now matches .env (NODE_ENV)
-
+ const dburi = process.env.PRD_DB_CONNECTION_STRING;
+console.log("check db uri",dburi);
+console.log("check node env",nodeEnviorment);
 const enviormentConfig = {
   port:
     nodeEnviorment === "production"

@@ -18,7 +18,7 @@ const OperatingAreaSchema = new Schema(
 const ProjectSchema = new Schema(
   {
     title: { type: String, required: true, trim: true, maxlength: 140 },
-    summary: { type: String, required: true, trim: true, maxlength: 500 },
+    summary: { type: String, required: true, trim: true},
     category: { type: String, trim: true, maxlength: 80 },
     location: { type: String, trim: true, maxlength: 120 },
     startDate: Date,
