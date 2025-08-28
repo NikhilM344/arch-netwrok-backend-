@@ -77,6 +77,7 @@ export const updateClientRequestStatus = async (req, res) => {
       const professional = await vendorSignUpModel
         .findById(updatedRequest.professionalId)
         .select("representativeName representativeEmail representativeMobile");
+       console.log("Professional Info:", professional);
       if (professional) {
         await sendMail(
           updatedRequest.email,

@@ -15,15 +15,15 @@ const requestAcceptedTemplate = (clientName, professional) => `
       <table style="width:100%; margin: 18px 0 24px 0; font-size: 15px;">
         <tr>
           <td style="padding: 6px 0; width: 120px;"><b>Name:</b></td>
-          <td style="padding: 6px 0;">${professional.fullName || ""}</td>
+          <td style="padding: 6px 0;">${professional.representativeName || ""}</td>
         </tr>
         <tr>
           <td style="padding: 6px 0;"><b>Email:</b></td>
-          <td style="padding: 6px 0;">${professional.email || ""}</td>
+          <td style="padding: 6px 0;">${professional.representativeEmail || ""}</td>
         </tr>
         <tr>
           <td style="padding: 6px 0;"><b>Phone:</b></td>
-          <td style="padding: 6px 0;">${professional.mobileNumber || ""}</td>
+          <td style="padding: 6px 0;">${professional.representativeMobile || ""}</td>
         </tr>
       </table>
       <p style="font-size: 15px; color: #333;">

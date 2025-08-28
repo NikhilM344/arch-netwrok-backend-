@@ -123,7 +123,7 @@ export const userLogin = async (req, res) => {
     }
 
     if (!user) {
-      return sendResponse(res, 404, false, null, "User not found", "No Account");
+      return sendResponse(res, 404, false, null, "User not found", "No matching account exists in our records");
     }
 
     const isMatch = await bcrypt.compare(String(password), user.password);
@@ -134,7 +134,7 @@ export const userLogin = async (req, res) => {
         false,
         null,
         "Invalid credentials",
-        "Login Failed"
+        "Authentication failed. Invalid username or password."
       );
     }
 

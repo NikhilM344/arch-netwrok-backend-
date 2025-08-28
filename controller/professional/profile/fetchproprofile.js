@@ -21,7 +21,7 @@ export const fetchProfessionalProfileDetail = async (req, res) => {
     const vendorIntialDetail = await vendorSignUpModel
       .findById(id)
       .select(
-        "representativeName businessName isProjectCount avgRating city state representativeMobile representativeEmail dateOfEstablishment"
+        "representativeName businessName isProjectCount avgRating city state representativeMobile representativeEmail dateOfEstablishment shortDescription representativePhoto logo"
       )
       .lean();
 

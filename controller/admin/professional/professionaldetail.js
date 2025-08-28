@@ -87,15 +87,20 @@ export const fetchProfessionalDetailsInDetailedForAdmin = async (req, res) => {
         return {
           businessDetails: {
             companyName: professional.businessName,
-            placeofBusinessRegistration: professional.registeredAddress.line1 || "Address not provided",
-            businessStablishedYear: professional.dateOfEstablishment.toString().split("T")[0] || "Year not specified",
+            placeofBusinessRegistration:
+              professional.registeredAddress.line1 || "Address not provided",
+            businessStablishedYear:
+              professional.dateOfEstablishment.toString().split("T")[0] ||
+              "Year not specified",
             businessProof: professional.companyRegistrationDoc || "",
-            businessType: professional.businessType || "Business type not specified",
-            businessEmail:professional.companyEmail || "Email not provided",
+            businessType:
+              professional.businessType || "Business type not specified",
+            businessEmail: professional.companyEmail || "Email not provided",
             businessMobile: professional.companyPhone || "Mobile not provided",
             businessWebsite: professional.websiteUrl || "Website not provided",
+            businessLogo: professional.logo || "logo not provided",
           },
-          businessCategory:professional.category,
+          businessCategory: professional.category,
           //  modified with new
           profPersonalDetails: {
             fullName: professional.representativeName,
@@ -108,19 +113,52 @@ export const fetchProfessionalDetailsInDetailedForAdmin = async (req, res) => {
           },
           profPortfolio: {
             projectTitle: professional.projects.title,
-            buildingType: professional.projects.category||"Category not specified",
-            buildingLocation: professional.projects.location||"Location not specified",
-            description: professional.projects.summary||"Summary not provided",
-            thumbnailImage: professional.projects.image || "Project Image Not Uploaded By Professional",
+            buildingType:
+              professional.projects.category || "Category not specified",
+            buildingLocation:
+              professional.projects.location || "Location not specified",
+            description:
+              professional.projects.summary || "Summary not provided",
+            thumbnailImage:
+              professional.projects.image ||
+              "Project Image Not Uploaded By Professional",
           },
           profVerificationStatus: {
             isVerifiedByAdmin: professional.isVerifiedByAdmin,
-            isVerificationRejectionReason: professional.isVerificationRejectionReason,
+            isVerificationRejectionReason:
+              professional.isVerificationRejectionReason,
           },
+          documents: {
+            kycIdType: professional.kycIdType || "KYC ID type not specified",
+            kycIdDocument:
+              professional.kycIdDocument || "kyc document not provided",
+            // optional documents
+            ...(professional.businessType !== "Individual" && {
+              companyRegistrationDoc: professional.companyRegistrationDoc,
+            }),
+            ...(professional.category == "ArchitectureConsultant" && {
+              coaRegistrationDoc: professional.coaRegistrationDoc,
+            }),
+            ...(professional.gstNumber && {
+              gstNumber: professional.gstNumber,
+            }),
+            ...(professional.gstDocument && {
+              gstDocument: professional.gstDocument,
+            }),
+            ...(professional.category == "StructuralConsultant" && {
+              structuralRegistrationDoc: professional.structuralRegistrationDoc,
+            }),
+            ...(professional.category == "Contractor" && {
+              constructionLicenseDoc: professional.constructionLicenseDoc,
+            }),
+          },
+          description:{
+            shortDescription:professional.shortDescription || "Not Provided",
+            LongDescription:professional.detailedDescription || "Not Provided"
+          }
         };
       }
     );
-
     sendResponse(
       res,
       200,
