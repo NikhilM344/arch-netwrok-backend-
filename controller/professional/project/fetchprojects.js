@@ -17,7 +17,7 @@ export const fetchProfessionalProjects = async (req, res) => {
 
   try {
     const projects = await createProjectModal
-      .find({ professionalId })
+      .find({ professionalId, isPublished: true })
       .lean(); // lean for plain objects
 
     const transformedProjects = projects.map((item) => ({
@@ -31,10 +31,10 @@ export const fetchProfessionalProjects = async (req, res) => {
       projectTechDocImg: item.projectTechDocImg || null,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
-      isDraft:item.isDraft,
-      isPublished:item.isPublished,
-      tagsAndControl:item.tagsAndControl,
-      isFeatured:item.isFeatured
+      isDraft: item.isDraft,
+      isPublished: item.isPublished,
+      tagsAndControl: item.tagsAndControl,
+      isFeatured: item.isFeatured,
     }));
 
     return sendResponse(

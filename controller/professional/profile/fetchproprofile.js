@@ -37,7 +37,7 @@ export const fetchProfessionalProfileDetail = async (req, res) => {
 
     // find vendor project detail
     const projectDetail = await createProjectModal
-      .find({ professionalId: id })
+      .find({ professionalId: id,isPublished:true })
       .select("projectBasicDetail projectNarritveAndDesc projectImage")
       .lean();
 

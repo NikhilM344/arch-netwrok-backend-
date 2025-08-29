@@ -4,6 +4,7 @@ import upload from "../../../utility/vendorformdata.js";
 import { createProfessionalProject } from "../../../controller/professional/project/createproject.js";
 import { requireRole } from "../../../middleware/requireRoleMiddleware.js";
 import fetchProfessionalProjects from "../../../controller/professional/project/fetchprojects.js";
+import  {fetchProjectDetails}  from "../../../controller/professional/project/fetchProjectDetails.js";
 
 router.post(
   "/createproject",
@@ -15,6 +16,7 @@ router.post(
     { name: "presentaionBoardImg", maxCount: 5 }
   ]),
   createProfessionalProject
-).get("/fetchprojects",requireRole,fetchProfessionalProjects);
+).get("/fetchprojects",requireRole,fetchProfessionalProjects)
+.get("/fetchprojectdetails/:id",requireRole,fetchProjectDetails)
 
 export default router;
