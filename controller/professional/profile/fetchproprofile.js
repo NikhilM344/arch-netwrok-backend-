@@ -37,10 +37,18 @@ export const fetchProfessionalProfileDetail = async (req, res) => {
 
     // find vendor project detail
     const projectDetail = await createProjectModal
-      .find({ professionalId: id,isPublished:true })
+      .find({ professionalId: id, isPublished: true })
       .select("projectBasicDetail projectNarritveAndDesc projectImage")
       .lean();
 
+    const projectCount = await createProjectModal.countDocuments({
+      professionalId: id,isPublished: true
+    });
+
+    let profProjectCount;
+    if (projectCount > 0) {
+      profProjectCount = projectCount;
+    }
     // modified vendor details
     const vendorModifiedDetails = Object.entries(vendorIntialDetail).reduce(
       (acc, [key, value]) => {
@@ -98,6 +106,7 @@ export const fetchProfessionalProfileDetail = async (req, res) => {
         profesBasicDetail: vendorModifiedDetails,
         profesReviewDetail: modifiedRating,
         profesProjectDetail: modifiedProjectDetails,
+        ...(profProjectCount && { projectCount: profProjectCount }),
       };
       return sendResponse(
         res,

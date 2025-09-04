@@ -25,7 +25,7 @@ export const professionalList = async (req, res) => {
     const professionals = await vendorSignUpModel
       .find(filter)
       .select(
-        "representativeName category projects.summary city state projects.category"
+        "representativeName category projects.summary city state projects.category slug"
       );
 
     console.log("professionals", professionals);

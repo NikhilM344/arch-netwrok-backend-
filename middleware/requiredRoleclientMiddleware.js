@@ -11,7 +11,6 @@ export const requireRoleClient = async (req, res, next) => {
      };
     const removedBearerToken = authoraization.split("Bearer")[1];
       const decode =  jwtDecode(removedBearerToken,enviormentConfig.jwtSecretKey);
-        console.log("this is decoded",decode);
      if(decode.role === "user"){
        req.userId=decode.id
       next()

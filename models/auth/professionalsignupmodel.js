@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
+import slugify from "slugify";
 
 // validators
 const PINCODE_REGEX = /^[1-9][0-9]{5}$/; // India pincode
@@ -225,9 +226,22 @@ const BusinessProfileSchema = new Schema(
       default: 0,
       required: false,
     },
+    slug:{
+      type: String,trim:true,lowercase:true,unique:true,trim:true
+    }
   },
   { timestamps: true }
 );
+
+BusinessProfileSchema.pre("save", function (next) {
+  if (this.isModified("businessName") || this.isModified("category") || this.isModified("city")) {
+    this.slug = slugify(
+      `${this.businessName}-${this.category}-${this.city}`,
+      { lower: true, strict: true }
+    );
+  }
+  next();
+});
 
 BusinessProfileSchema.pre("validate", function (next) {
   const doc = this;

@@ -98,11 +98,11 @@ export const createProfessionalProject = async (req, res) => {
 
     const savedProject = await newProject.save();
     if (savedProject) {
-      const countedDocument = await createProjectModal.countDocuments();
+      const countedDocument = await createProjectModal.countDocuments({professionalId:req.professionalId,isPublished:true});
       if (countedDocument) {
         const updatedVendor = await vendorSignUpModel.findByIdAndUpdate(
           { _id: req.professionalId },
-          { iscount: countedDocument }, // count ko update kar diya
+          { isProjectCount: countedDocument }, // count ko update kar diya
           { new: true }
         );
       }

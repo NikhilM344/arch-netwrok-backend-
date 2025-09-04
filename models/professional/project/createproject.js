@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import slugify from "slugify";
 
 const professionalProjectBasicDetail = new Schema({
   projectTitle: {
@@ -37,24 +38,31 @@ const professionalProjectBasicDetail = new Schema({
     trim: true,
     requird: [true, "state is required"],
   },
- projectArea: {
-  value: {
-    type: Number,
-    required: false,
-    default: 0,
+  projectArea: {
+    value: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    unit: {
+      type: String,
+      enum: ["sqft", "sqm"],
+      default: "sqft",
+    },
   },
-  unit: {
+  projectStatus: {
     type: String,
-    enum: ['sqft', 'sqm'],
-    default: 'sqft',
-  }
-},
-  projectStatus:{
-    type:String,
-    enum:['Built',"Unbuilt",'InProgress'],
-    required:true,
-    trim:true
-  }
+    enum: ["Built", "Unbuilt", "InProgress"],
+    required: true,
+    trim: true,
+  },
+  slug: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    unique: true,
+    trim: true,
+  },
 });
 
 const professionalProjectnarativeDetails = new Schema({
@@ -130,7 +138,7 @@ const professionalProjectSchema = new Schema(
     projectBasicDetail: professionalProjectBasicDetail,
     projectNarritveAndDesc: professionalProjectnarativeDetails,
     projectTt: professionalProjectTeamsAndTools,
-    tagsAndControl:professionalTagsAndControl,
+    tagsAndControl: professionalTagsAndControl,
     projectImage: {
       type: [String],
       required: true,
@@ -151,29 +159,96 @@ const professionalProjectSchema = new Schema(
       required: false,
       trim: true,
     },
-    isDraft:{
-      type:Boolean,
-      required:true,
-      default:false
+    isDraft: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
-    isPublished:{
-      type:Boolean,
-      required:false,
-      default:false
+    isPublished: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
-    isPublishedRejection:{
-      type:String,
-      required:false,
-      default:""
+    isPublishedRejection: {
+      type: String,
+      required: false,
+      default: "",
     },
-     isFeatured:{
-      type:Boolean,
-      required:true,
-      default:false
-    }
+    isFeatured: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   { timestamps: true }
 );
+
+// professionalProjectSchema.pre("save", async function (next) {
+//   if (
+//     this.isModified("projectBasicDetail.projectTitle") ||
+//     this.isModified("projectBasicDetail.projectCategory") ||
+//     this.isModified("projectBasicDetail.projectCity") ||
+//     !this.slug
+//   ) {
+//     const baseSlug = slugify(
+//       `${this.projectBasicDetail.projectTitle}-${this.projectBasicDetail.projectCategory}-${this.projectBasicDetail.projectCity}`,
+//       { lower: true, strict: true }
+//     );
+
+//     let slug = baseSlug;
+//     let counter = 1;
+
+//     // Check for duplicates
+//     while (
+//       await mongoose.models.projects.findOne({
+//         slug,
+//         _id: { $ne: this._id }, // exclude self
+//       })
+//     ) {
+//       slug = `${baseSlug}-${counter}`;
+//       counter++;
+//     }
+
+//     this.slug = slug;
+//   }
+//   next();
+// });
+
+professionalProjectSchema.pre("save", async function (next) {
+  try {
+    if (
+      this.isModified("projectBasicDetail.projectTitle") ||
+      this.isModified("projectBasicDetail.projectCategory") ||
+      this.isModified("projectBasicDetail.projectCity") ||
+      !this.projectBasicDetail.slug
+    ) {
+      const baseSlug = slugify(
+        `${this.projectBasicDetail.projectTitle}-${this.projectBasicDetail.projectCategory}-${this.projectBasicDetail.projectCity}`,
+        { lower: true, strict: true }
+      );
+
+      let slug = baseSlug;
+      let counter = 1;
+
+      while (
+        await mongoose.models.projects.findOne({
+          "projectBasicDetail.slug": slug,
+          _id: { $ne: this._id },
+        })
+      ) {
+        slug = `${baseSlug}-${counter}`;
+        counter++;
+      }
+
+      this.projectBasicDetail.slug = slug;
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 
 export const createProjectModal = mongoose.model(
   "projects",

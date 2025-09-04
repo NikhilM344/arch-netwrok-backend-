@@ -35,6 +35,7 @@ export const fetchProfessionalProjects = async (req, res) => {
       isPublished: item.isPublished,
       tagsAndControl: item.tagsAndControl,
       isFeatured: item.isFeatured,
+      slug: item.slug,
     }));
 
     return sendResponse(
