@@ -5,10 +5,7 @@ import { vendorSignUpModel } from "../../models/auth/professionalsignupmodel.js"
 export const professionalList = async (req, res) => {
   try {
     const { service, location, pincode } = req.query;
-
-    console.log("service location pincode", service, location, pincode);
-
-    const filter = { isVerifiedByAdmin: true }; // Default filter for verified admins
+    const filter = { isVerifiedByAdmin: true };
 
     if (service) {
       filter.category = service;
@@ -27,8 +24,6 @@ export const professionalList = async (req, res) => {
       .select(
         "representativeName category projects.summary city state projects.category slug"
       );
-
-    console.log("professionals", professionals);
 
     return sendResponse(
       res,

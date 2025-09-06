@@ -86,6 +86,7 @@ export const fetchProfessionalProfileDetail = async (req, res) => {
           projectState: current.projectBasicDetail.projectState,
           projectStatus: current.projectBasicDetail.projectStatus,
           id: current.projectBasicDetail._id.toString(),
+          slug:current.projectBasicDetail.slug
         },
         projectNarritveAndDesc: {
           projectObjectives: current.projectNarritveAndDesc.projectObjectives,
