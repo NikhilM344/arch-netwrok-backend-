@@ -132,7 +132,7 @@ const professionalProjectSchema = new Schema(
   {
     professionalId: {
       type: mongoose.Schema.Types.ObjectId,
-      refs: "Vendor",
+      ref: "Vendor",
       required: true,
     },
     projectBasicDetail: professionalProjectBasicDetail,

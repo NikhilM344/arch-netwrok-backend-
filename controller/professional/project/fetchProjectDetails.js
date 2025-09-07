@@ -14,7 +14,12 @@ export const fetchProjectDetails = async (req, res) => {
     );
   }
   try {
-    const projectDetails = await createProjectModal.findById(id).lean();
+    const projectDetails = await createProjectModal
+    .findById(id)
+    .populate(
+     {path:"professionalId",select: "representativeName representativePhoto slug"}
+    )
+    
     if (!projectDetails) {
       return sendResponse(res, 404, false, null, null, "Project Not Found");
     }
