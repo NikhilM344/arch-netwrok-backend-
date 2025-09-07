@@ -7,10 +7,10 @@ import generateJWT from "../../utility/genratejwt.js";
 // modified with new
 export const userRegistration = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role } = req.body;
+    const { firstName, lastName, email, password, role,mobileNumber } = req.body;
 
     // Basic validation
-    if (!firstName || !lastName || !email || !password || !role) {
+    if (!firstName || !lastName || !email || !password || !role ||!mobileNumber) {
       return sendResponse(
         res,
         400,
@@ -42,6 +42,7 @@ export const userRegistration = async (req, res) => {
       firstName,
       lastName,
       email,
+      mobileNumber,
       password: hashedPassword,
       role,
     });

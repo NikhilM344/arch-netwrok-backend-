@@ -7,16 +7,13 @@ export const professionalList = async (req, res) => {
     const { service, location, pincode } = req.query;
     const filter = { isVerifiedByAdmin: true };
 
-    if (service) {
-      filter.category = service;
-    }
+    const orConditions = [];
+    if (service) orConditions.push({ category: service });
+    if (location) orConditions.push({ city: location });
+    if (pincode) orConditions.push({ pincode: pincode });
 
-    if (location) {
-      filter.city = location;
-    }
-
-    if (pincode) {
-      filter.pincode = pincode;
+    if (orConditions.length > 0) {
+      filter.$or = orConditions;
     }
 
     const professionals = await vendorSignUpModel

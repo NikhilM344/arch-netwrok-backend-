@@ -33,6 +33,12 @@ const SignUpSchema = new Schema({
     required: [true, "Email Is Required"],
     trim: true,
   },
+   mobileNumber: {
+    type: String,
+    unique: true,
+    required: [true, "Mobile Number Is Required"],
+    trim: true,
+  },
   password: {
     type: String,
     required: [true, "Password Is Required"],
