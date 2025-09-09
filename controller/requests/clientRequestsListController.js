@@ -7,7 +7,7 @@ export const clientRequestList = async (req, res) => {
     const extractedReq = await clientRequestModal
       .find({ professionalId: req.professionalId })
       .select(
-        "clientName email clientProjectCategory clientProjectBudgetRange clientProjectTimeLine clientProjectType clientProjectLocation clientProjectServicesType createdAt status"
+        "clientName clientPhoneNumber email clientProjectCategory clientProjectBudgetRange clientProjectTimeLine clientProjectType clientProjectLocation clientProjectServicesType createdAt status"
       );
     // If no data found
     if (!extractedReq || extractedReq.length === 0) {
@@ -32,6 +32,7 @@ export const clientRequestList = async (req, res) => {
       clientProjectType: item.clientProjectType,
       clientProjectLocation: item.clientProjectLocation,
       clientProjectServicesType: item.clientProjectServicesType,
+      clientPhoneNumber:item.clientPhoneNumber,
       createdAt: item.createdAt,
       status: item.status,
     }));
