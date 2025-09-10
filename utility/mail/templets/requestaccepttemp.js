@@ -1,3 +1,5 @@
+import enviormentConfig from "../../../configs/enviorment.js";
+
 const requestAcceptedTemplate = (clientName, professional) => `
   <div style="font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; padding: 32px;">
     <div style="max-width: 520px; margin: auto; background: #fff; border-radius: 8px; box-shadow:0 2px 8px #eee; padding: 32px;">
@@ -31,7 +33,7 @@ const requestAcceptedTemplate = (clientName, professional) => `
         If you have any questions, simply reply to this email.
       </p>
       <div style="margin: 32px 0 0 0; text-align: center;">
-        <a href="http://www.buildquery.com/" style="background: #2e6c80; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">Visit BuildQuery</a>
+        <a href="${enviormentConfig.frontEndBaseUrl}" style="background: #2e6c80; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">Visit BuildQuery</a>
       </div>
       <p style="color:#888; font-size:13px; margin-top:32px;">
         Thank you for choosing <b>BuildQuery</b>!<br>

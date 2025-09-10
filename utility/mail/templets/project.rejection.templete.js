@@ -1,3 +1,5 @@
+import enviormentConfig from "../../../configs/enviorment.js";
+
 export const projectRejectedTemplate = (userName, projectTitle, rejectionReason) => `
   <div style="font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; padding: 32px;">
     <div style="max-width: 520px; margin: auto; background: #fff; border-radius: 8px; box-shadow:0 2px 8px #eee; padding: 32px;">
@@ -20,7 +22,7 @@ export const projectRejectedTemplate = (userName, projectTitle, rejectionReason)
         You may review the project details, make the necessary changes, and re-upload it for reconsideration.
       </p>
       <div style="margin: 28px 0; text-align: center;">
-        <a href="http://www.buildquery.com/dashboard" style="background: #c0392b; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">
+        <a href="${enviormentConfig.frontEndBaseUrl}/dashboard" style="background: #c0392b; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">
           Update Project
         </a>
       </div>

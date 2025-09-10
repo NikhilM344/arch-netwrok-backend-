@@ -1,3 +1,5 @@
+import enviormentConfig from "../../../configs/enviorment.js";
+
 const registrationRejectedTemplate = (userName, reason) => `
   <div style="font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; padding: 32px;">
     <div style="max-width: 520px; margin: auto; background: #fff; border-radius: 8px; box-shadow:0 2px 8px #eee; padding: 32px;">
@@ -21,7 +23,7 @@ const registrationRejectedTemplate = (userName, reason) => `
         You may re-apply for registration once the necessary corrections are made.
       </p>
       <div style="margin: 28px 0; text-align: center;">
-        <a href="http://www.buildquery.com" style="background: #2e6c80; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">
+        <a href="${enviormentConfig.frontEndBaseUrl}" style="background: #2e6c80; color: #fff; text-decoration: none; padding: 10px 28px; border-radius: 4px; font-weight: bold;">
           Re-Apply
         </a>
       </div>

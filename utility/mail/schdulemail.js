@@ -13,7 +13,7 @@ cron.schedule("* * * * *", async () => {
 
   for (const mail of mails) {
     try {
-      const reviewLink = `&{enviormentConfig.backendBaseUrl}/review?professionalId=${mail.professionalId}&requestId=${mail.requestId}`;
+      const reviewLink = `&{enviormentConfig.frontEndBaseUrl}/review?professionalId=${mail.professionalId}&requestId=${mail.requestId}`;
       console.log("Sending mail to:", mail.email);
       await sendMail(
         mail.email,

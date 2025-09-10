@@ -41,9 +41,9 @@ const allowedOrigins = [
   "https://www.buildquery.com",
   "https://buildquery.com",
   "https://admin.buildquery.com",
-  "http://localhost:8080",
-  "http://localhost:8081",
-  "http://localhost:8082",
+  // "http://localhost:8080",
+  // "http://localhost:8081",
+  // "http://localhost:8082",
 ];
 
 app.use(

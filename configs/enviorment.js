@@ -3,7 +3,6 @@ dotenv.config();
 
 const nodeEnviorment = process.env.NODE_ENV;
 
-
 const enviormentConfig = {
   port:
     nodeEnviorment === "production"
@@ -49,6 +48,10 @@ const enviormentConfig = {
     nodeEnviorment === "production"
       ? process.env.PRD_Twilio_Phone
       : process.env.DEV_Twilio_Phone,
+  frontEndBaseUrl:
+    nodeEnviorment === "production"
+      ? process.env.PRD_FRONTEND_BASE_URL
+      : process.env.DEV_FRONTEND_BASE_URL,
 };
- console.log(enviormentConfig.backendBaseUrl, "backend base url")
+console.log(enviormentConfig.backendBaseUrl, "backend base url");
 export default enviormentConfig;
