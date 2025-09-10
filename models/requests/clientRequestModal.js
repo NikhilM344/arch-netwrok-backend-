@@ -61,7 +61,7 @@ const clientRequestsSchema = new Schema({
   clientPhoneNumber: {
     type: String,
     maxlength: [10, "Phone Number can be only 10 digits"],
-    minlength: [10, "Phone Number should be exactly 10 digits"],
+    // minlength: [10, "Phone Number should be exactly 10 digits"],
     trim: true,
     required: [true, "client Phone Number Is Required"],
   },
