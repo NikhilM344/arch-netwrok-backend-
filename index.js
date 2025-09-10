@@ -23,16 +23,40 @@ import "./utility/mail/schdulemail.js";
 
 const app = express();
 connectDb();
+// app.use(
+//   cors({
+//     origin: [
+//       "http://buildquery.com",
+//       "http://www.buildquery.com",
+//       "http://localhost:8080",
+//       "http://localhost:8081",
+//       "http://localhost:8082",
+//       "http://admin.buildquery.com",
+//     ],
+//     credentials: true,
+//   })
+// );
+
+const allowedOrigins = [
+  "https://www.buildquery.com",
+  "https://buildquery.com",
+  "https://admin.buildquery.com",
+  "http://localhost:8080",
+  "http://localhost:8081",
+  "http://localhost:8082",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://buildquery.com",
-      "http://www.buildquery.com",
-      "http://localhost:8080",
-      "http://localhost:8081",
-      "http://localhost:8082",
-      "http://admin.buildquery.com",
-    ],
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
