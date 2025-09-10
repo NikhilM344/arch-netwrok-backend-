@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const nodeEnviorment = process.env.NODE_ENV;
-console.log(enviormentConfig.backendBaseUrl,"backend base url");
+
 
 const enviormentConfig = {
   port:
@@ -50,5 +50,5 @@ const enviormentConfig = {
       ? process.env.PRD_Twilio_Phone
       : process.env.DEV_Twilio_Phone,
 };
-
+ console.log(enviormentConfig.backendBaseUrl, "backend base url")
 export default enviormentConfig;
