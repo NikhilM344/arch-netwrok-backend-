@@ -65,6 +65,10 @@ app.use(
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 app.use(express.json({ limit: "20mb" }));
 
+app.get("/test-env", (req, res) => {
+  res.json({ baseURL: enviormentConfig.backendBaseUrl });
+});
+
 app.get("/", (req, res) => {
   res.json({ message: "Build Query API is live 🚀" });
 });
