@@ -36,7 +36,7 @@ connectDb();
 //     credentials: true,
 //   })
 // );
-  console.log(enviormentConfig.backendBaseUrl,"backend base url");
+
 const allowedOrigins = [
   "https://www.buildquery.com",
   "https://buildquery.com",

@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const nodeEnviorment = process.env.NODE_ENV;
+console.log(enviormentConfig.backendBaseUrl,"backend base url");
 
 const enviormentConfig = {
   port:
