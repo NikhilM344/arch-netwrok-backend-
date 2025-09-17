@@ -3,14 +3,25 @@ import { userSignUpModle } from "../../models/auth/usersignupmodle.js";
 import { vendorSignUpModel } from "../../models/auth/professionalsignupmodel.js";
 import bcrypt from "bcryptjs";
 import generateJWT from "../../utility/genratejwt.js";
+import { v4 as uuidv4 } from "uuid";
+import emailVerificationTemplate from "../../utility/mail/templets/emailverificationtemplate.js";
+import sendMail from "../../utility/mail/sendmail.js";
 
 // modified with new
 export const userRegistration = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role,mobileNumber } = req.body;
+    const { firstName, lastName, email, password, role, mobileNumber } =
+      req.body;
 
     // Basic validation
-    if (!firstName || !lastName || !email || !password || !role ||!mobileNumber) {
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !role ||
+      !mobileNumber
+    ) {
       return sendResponse(
         res,
         400,
@@ -35,7 +46,12 @@ export const userRegistration = async (req, res) => {
     }
 
     // 🔐 Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10); 
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const emailVerificationId = uuidv4();
+    // genrate six digit random number for otp
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // set otp expiry time
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
     // Create new user with hashed password
     const newUser = new userSignUpModle({
@@ -43,24 +59,43 @@ export const userRegistration = async (req, res) => {
       lastName,
       email,
       mobileNumber,
+      emailVerificationId,
+      otp,
+      otpExpiry,
       password: hashedPassword,
       role,
     });
 
     await newUser.save();
 
-    return sendResponse(
+    sendResponse(
       res,
       201,
       true,
-      { email: newUser.email, role: newUser.role },
+      {
+        email: newUser.email,
+        role: newUser.role,
+        emailVerificationId: newUser.emailVerificationId,
+      },
       null,
-      "User created successfully"
+      "Six Digit Otp Sent On Your Mail Please Fill Valid Otp And Verify Your Account"
     );
+    sendMail(
+      newUser.email,
+      "Verify Your Email",
+      emailVerificationTemplate(newUser.firstName, newUser.otp)
+    ).catch((err) => console.error("Email send failed:", err));
   } catch (error) {
     if (error.name === "ValidationError") {
       const errors = Object.values(error.errors).map((err) => err.message);
-      return sendResponse(res, 400, false, null, errors[0], "Validation failed");
+      return sendResponse(
+        res,
+        400,
+        false,
+        null,
+        errors[0],
+        "Validation failed"
+      );
     } else if (error.code === 11000) {
       return sendResponse(
         res,
@@ -124,7 +159,14 @@ export const userLogin = async (req, res) => {
     }
 
     if (!user) {
-      return sendResponse(res, 404, false, null, "User not found", "No matching account exists in our records");
+      return sendResponse(
+        res,
+        404,
+        false,
+        null,
+        "User not found",
+        "No matching account exists in our records"
+      );
     }
 
     const isMatch = await bcrypt.compare(String(password), user.password);
@@ -169,4 +211,3 @@ export const userLogin = async (req, res) => {
     );
   }
 };
-

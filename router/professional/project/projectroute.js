@@ -5,6 +5,7 @@ import { createProfessionalProject } from "../../../controller/professional/proj
 import { requireRole } from "../../../middleware/requireRoleMiddleware.js";
 import fetchProfessionalProjects from "../../../controller/professional/project/fetchprojects.js";
 import  {fetchProjectDetails}  from "../../../controller/professional/project/fetchProjectDetails.js";
+import { fetchUnpublishedProjects } from "../../../controller/professional/project/fetchProjectDetails.js";
 
 router.post(
   "/createproject",
@@ -18,5 +19,6 @@ router.post(
   createProfessionalProject
 ).get("/fetchprojects",requireRole,fetchProfessionalProjects)
 .get("/fetchprojectdetails/:id",requireRole,fetchProjectDetails)
+.get("/fetch-unpublished-project",fetchUnpublishedProjects);
 
 export default router;

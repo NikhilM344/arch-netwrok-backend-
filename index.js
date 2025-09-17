@@ -19,6 +19,8 @@ import proDashboardInfoRoutes from "./router/professional/dashboard/dashboardRou
 import newRegistrationRoute from "./router/auth/newprofessionalauth.js";
 import deleteProfessionalAccountRouter from "./router/professional/account/deleteprofaccountrouter.js";
 import userDashboardDetailRouter from "./router/user/dashboard/userdashboarddetailrouter.js";
+import forgetPasswordOtpVericationRoutes from './router/auth/password/forgetpasswordrouter.js'
+
 import "./utility/mail/schdulemail.js";
 
 const app = express();
@@ -27,9 +29,9 @@ const allowedOrigins = [
   "https://www.buildquery.com",
   "https://buildquery.com",
   "https://admin.buildquery.com",
-  // "http://localhost:8080",
-  // "http://localhost:8081",
-  // "http://localhost:8082",
+  "http://localhost:8080",
+  "http://localhost:8081",
+  "http://localhost:8082",
 ];
 
 app.use(
@@ -63,7 +65,7 @@ app.use(
 );
 app.use("/uploads", express.static("uploads"));
 app.use("/userauth", userRegistration);
-app.use("/auth", otpVerificationRoutes, newRegistrationRoute);
+app.use("/auth", otpVerificationRoutes, newRegistrationRoute,forgetPasswordOtpVericationRoutes);
 app.use("/professional", professionList, proDashboardInfoRoutes);
 app.use("/request", clientRequest);
 app.use("/user", userprofile, userDashboardDetailRouter);

@@ -114,7 +114,7 @@ export const createProfessionalProject = async (req, res) => {
       true,
       savedProject,
       null,
-      "Project created successfully"
+      "Your project has been created successfully.It will appear on your profile once it’s approved by the admin"
     );
   } catch (error) {
     console.error("Project Creation Error:", error);

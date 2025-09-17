@@ -53,5 +53,4 @@ const enviormentConfig = {
       ? process.env.PRD_FRONTEND_BASE_URL
       : process.env.DEV_FRONTEND_BASE_URL,
 };
-console.log(enviormentConfig.backendBaseUrl, "backend base url");
 export default enviormentConfig;
