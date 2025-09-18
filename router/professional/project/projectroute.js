@@ -18,7 +18,7 @@ router.post(
   ]),
   createProfessionalProject
 ).get("/fetchprojects",requireRole,fetchProfessionalProjects)
-.get("/fetchprojectdetails/:id",requireRole,fetchProjectDetails)
+.get("/fetchprojectdetails/:id",fetchProjectDetails)
 .get("/fetch-unpublished-project",fetchUnpublishedProjects);
 
 export default router;
