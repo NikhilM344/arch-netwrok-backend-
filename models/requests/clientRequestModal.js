@@ -67,7 +67,7 @@ const clientRequestsSchema = new Schema({
   },
   email: {
     type: String,
-    unique: true,
+    unique: false,
     required: [true, "Client Email Is Required"],
     trim: true,
   },
