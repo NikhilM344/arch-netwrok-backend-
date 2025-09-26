@@ -99,3 +99,39 @@ export const fetchUnpublishedProjects = async (req, res) => {
   }
 };
 
+export const deleteProject = async (req,res)=>{
+  const id = req.params.id;
+  if (!id) {
+    return sendResponse(
+      res,
+      404,
+      false,
+      null,
+      null,
+      "Specific Resource Not Found"
+    );
+  }
+  try {
+    const deletedProject = await createProjectModal.findByIdAndDelete(id);
+    if (!deletedProject) {
+      return sendResponse(res, 404, false, null, null, "Project Not Found");
+    }
+    return sendResponse(
+      res,
+      200,
+      true,
+      null,
+      null,
+      "Project deleted successfully"
+    );
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      false,
+      null,
+      error.message,
+      "Failed to delete project"
+    );  
+}
+}
