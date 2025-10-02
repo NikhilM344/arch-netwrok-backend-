@@ -63,7 +63,7 @@ app.use(
   professionaldetailsRouter,
   deleteProfessionalAccountRouter
 );
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 app.use("/api/uploads", express.static("uploads"));
 
 app.use("/userauth", userRegistration);
