@@ -64,6 +64,8 @@ app.use(
   deleteProfessionalAccountRouter
 );
 app.use("/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"));
+
 app.use("/userauth", userRegistration);
 app.use("/auth", otpVerificationRoutes, newRegistrationRoute,forgetPasswordOtpVericationRoutes);
 app.use("/professional", professionList, proDashboardInfoRoutes);
